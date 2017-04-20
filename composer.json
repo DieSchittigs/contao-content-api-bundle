@@ -1,0 +1,21 @@
+{
+    "name": "dieschittigs/contao-content-api",
+    "description": "Access Contao content via an easy to use API",
+    "type": "library",
+    "require": {
+
+    },
+    "license": "MIT License",
+    "authors": [
+        {
+            "name": "Tobias Duehr",
+            "email": "tobias@dieschittigs.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "DieSchittigs\\ContaoContentApi\\" : "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

@@ -1,0 +1,13 @@
+/vendor/
+/app/
+/assets/
+/var/
+/files/
+/contao/
+/.github/
+/share/
+/index.php
+/templates/
+/system/
+/web/*
+!/web/api.php
