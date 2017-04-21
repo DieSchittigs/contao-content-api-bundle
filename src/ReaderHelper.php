@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Contao\ContentModel;
 use Contao\Controller;
+use Contao\ModuleNewsReader;
 
 class ReaderHelper
 {

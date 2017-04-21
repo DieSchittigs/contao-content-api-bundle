@@ -66,7 +66,6 @@ class PageHelper
             return;
         }
         Controller::setStaticUrls($page);
-        $pageUrl = Controller::generateFrontendUrl($page->row());
         $_page = self::parsePage($page);
         $_page->articles = ArticleHelper::pageArticles($page->id);
         return $_page;

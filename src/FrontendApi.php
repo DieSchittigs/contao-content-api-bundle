@@ -5,6 +5,8 @@ namespace DieSchittigs\ContaoContentApi;
 use Contao\ManagerBundle\ContaoManager\Plugin as ManagerBundlePlugin;
 use Contao\ManagerBundle\HttpKernel\ContaoCache;
 use Contao\ManagerBundle\HttpKernel\ContaoKernel;
+use Contao\Environment;
+use Contao\System;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,11 +36,22 @@ class FrontendApi
         $this->readers[$reader] = $class;
     }
 
+    private function setLang(Request $request){
+        $globalLang = $request->query->get('lang', Helper::defaultLang());
+        $GLOBALS['TL_LANGUAGE'] = $globalLang;
+        $_SESSION['TL_LANGUAGE'] = $globalLang;
+        System::loadLanguageFile('default', $globalLang);
+    }
+
+    private function overrideRequestUri(Request $request){
+        $_SERVER["REQUEST_URI"] = $request->query->get('url', $_SERVER["REQUEST_URI"]);
+    }
+
     public function handle(Request $request)
     {
-        if ($request->query->get('url')) {
-            $_SERVER["REQUEST_URI"] = $request->query->get('url');
-        }
+        $this->overrideRequestUri($request);
+        $this->setLang($request);
+
         $result = null;
         switch ($request->getPathInfo()) {
             case '/sitemap':
