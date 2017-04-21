@@ -43,7 +43,7 @@ class FrontendApi
         switch ($request->getPathInfo()) {
             case '/sitemap':
                 $result = SitemapHelper::getSitemap(
-                    $request->query->get('rootIndex', 0)
+                    $request->query->get('lang', null)
                 );
             break;
             case '/page':
@@ -53,11 +53,11 @@ class FrontendApi
             break;
             case '/text':
                 $result = TextHelper::get(
-                    $request->query->get('file', 'global'),
+                    explode(',', $request->query->get('file', 'default')),
                     $request->query->get('lang', null)
                 );
             break;
-            case 'user':
+            case '/user':
                 $apiUser = new ApiUser;
                 if ($user = $apiUser->getUser()) {
                     $result = [

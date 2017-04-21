@@ -8,6 +8,7 @@ use Contao\Model;
 use Contao\Controller;
 use Contao\Module;
 use Contao\Config;
+use Contao\PageModel;
 
 class Helper
 {
@@ -57,10 +58,19 @@ class Helper
     }
     public static function replaceHTML($html)
     {
+        $apiScript = substr($_SERVER['SCRIPT_NAME'], 1);
         $html = Controller::replaceInsertTags($html);
         $html = trim($html);
         $html = preg_replace("/[[:blank:]]+/", " ", $html);
+        $html = str_replace('"'.$apiScript, '"', $html);
+        $html = str_replace('src="files', 'src="/files', $html);
+        $html = str_replace('href="files', 'href="/files', $html);
         return $html;
+    }
+
+    public static function replaceURL($url){
+        $apiScript = substr($_SERVER['SCRIPT_NAME'], 1);
+        return str_replace($apiScript, '', $url);
     }
 
     public static function urlToAlias($url)
@@ -84,5 +94,16 @@ class Helper
             }
         }
         return substr($url, 0, -strlen($suffix));
+    }
+
+    public static function defaultLang(){
+        $rootPages = PageModel::findPublishedRootPages();
+        foreach($rootPages as $rootPage){
+            $rootPage->loadDetails();
+            if($rootPage->fallback){
+                return $rootPage->language;
+            }
+        }
+        return 'en';
     }
 }

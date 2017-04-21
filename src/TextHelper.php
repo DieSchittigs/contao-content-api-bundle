@@ -7,16 +7,13 @@ use Contao\Input;
 
 class TextHelper
 {
-    public static function get($langFile, $lang=null)
+    public static function get($langFiles, $lang=null)
     {
-        if (!$lang) {
-            Frontend::getPageIdFromUrl();
-            $lang = Input::get('language');
+        if (!$lang) $lang = Helper::defaultLang();
+        if(!is_array($langFiles)) $langfiles = [$langFiles];
+        foreach($langFiles as $langFile){
+            System::loadLanguageFile($langFile, $lang);
         }
-        $result = System::loadLanguageFile($langFile, $lang);
-        if ($result) {
-            return (object) $result;
-        }
-        return null;
+        return $GLOBALS['TL_LANG'];
     }
 }

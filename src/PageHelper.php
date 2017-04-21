@@ -32,27 +32,36 @@ class PageHelper
 
     public static function parsePage($page, $includeSubPages = true, $includeParentPage = true)
     {
+        $page->loadDetails();
         $_page = Helper::toObj($page);
-        if ($includeParentPage && $page->pid && $page->pid != 1) {
-            $_page->parentPage = static::parsePage(PageModel::findOneById($page->pid), false, true);
+        if ($includeParentPage && $page->pid) {
+            $parentPage = PageModel::findOneById($page->pid);
+            if($parentPage) $_page->parentPage = static::parsePage($parentPage, false, true);
         }
         if ($includeSubPages) {
             $_page->subPages = static::getSubPages($page->id, false, false);
         }
+        $_page->url = Helper::replaceURL($page->getFrontendUrl());
         return $_page;
     }
 
     public static function getPage($url)
     {
-        $urlAlias = Helper::urlToAlias($url);
-        $pageAlias = Frontend::getPageIdFromUrl();
-        if (!$pageAlias) {
-            return null;
+        if($url == '/' || $url == '/'.Helper::defaultLang().'/'){
+            $rootId = Frontend::getRootPageFromUrl()->id;
+            $rootPage = PageModel::findByIdOrAlias($rootId);
+            $page = PageModel::findFirstPublishedByPid($rootId);
+        } else {
+            $urlAlias = Helper::urlToAlias($url);
+            $pageAlias = Frontend::getPageIdFromUrl();
+            if (!$pageAlias) {
+                return null;
+            }
+            if ($urlAlias != $pageAlias) {
+                return null;
+            }
+            $page = PageModel::findByIdOrAlias($pageAlias);
         }
-        if ($urlAlias != $pageAlias && $pageAlias != 'index') {
-            return null;
-        }
-        $page = PageModel::findByIdOrAlias($pageAlias);
         if (!$page) {
             return;
         }
