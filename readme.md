@@ -68,6 +68,9 @@ Tries to get the page at this URL, or content from a reader
 
 Gets the logged-in frontend user, if available.
 
+All routes also take the additional `lang` parameter (e.g. `?lang=de`). If you
+have a multilingual website.
+
 ## Custom readers
 
 Contao has the concept of Reader Module (e.g. News Reader). These can be
