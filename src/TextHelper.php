@@ -11,9 +11,10 @@ class TextHelper
     {
         if (!$lang) $lang = Helper::defaultLang();
         if(!is_array($langFiles)) $langfiles = [$langFiles];
+        $GLOBALS['TL_LANG'] = [];
         foreach($langFiles as $langFile){
             System::loadLanguageFile($langFile, $lang);
         }
-        return $GLOBALS['TL_LANG'];
+        return (object) $GLOBALS['TL_LANG'];
     }
 }

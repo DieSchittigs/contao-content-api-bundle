@@ -52,11 +52,11 @@ Once setup, the following routes are available:
 
 Gets the sitemap (=all pages below root) for the given language.
 
-##### /api.php/page?url=/en/about/team.html
+##### /api.php/page?url=/about/team.html
 
 Gets the page, including all articles and contents at this URL.
 
-##### /api.php/news?url=/en/news/new-website.html
+##### /api.php/news?url=/news/new-website.html
 
 Gets the news reader content from the URL
 
@@ -86,11 +86,11 @@ so by adding them in your `api.php`.
 Please note that the second parameter is the **model** class, **not the module**
 class. The new reader is now available at
 
-##### /api.php/blog?url=/en/blog/detail/on-the-topic.html
+##### /api.php/blog?url=/blog/detail/on-the-topic.html
 
 or, even more convenient, at
 
-##### /api.php/url=/en/blog/detail/on-the-topic.html
+##### /api.php?url=/blog/detail/on-the-topic.html
 
 Internally the API tries to instantiate the model with the alias found in the url.
 It also tries to add all `ContentModels` it can find.
