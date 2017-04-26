@@ -16,12 +16,12 @@ class PageHelper
     public static function getSubPages($pageId)
     {
         $subPages = [];
-        $pages = PageModel::findPublishedSubpagesWithoutGuestsByPid($pageId);
+        $pages = PageModel::findPublishedByPid($pageId);
         if (!$pages) {
-            return;
+            return $subPages;
         }
         foreach ($pages as $page) {
-            $_page = static::parsePage($page);
+            $_page = static::parsePage($page, true, false);
             if ($page->subpages > 0) {
                 $_page->subPages = static::getSubPages($page->id);
             }

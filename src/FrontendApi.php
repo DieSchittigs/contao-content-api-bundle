@@ -16,9 +16,13 @@ class FrontendApi
     private $readers = [
         'news' => 'NewsModel'
     ];
+    private $user;
 
     public function __construct($loader, $readers = null)
     {
+        define('BYPASS_TOKEN_CHECK', true);
+        define('TL_MODE', 'FE');
+        define('BE_USER_LOGGED_IN', false);
         AnnotationRegistry::registerLoader([$loader, 'loadClass']);
         ManagerBundlePlugin::autoloadModules(dirname(__DIR__).'/system/modules');
         $kernel = new ContaoKernel('prod', false);
@@ -29,6 +33,8 @@ class FrontendApi
         if ($readers) {
             $this->readers = $readers;
         }
+        $apiUser = new ApiUser;
+        $this->user = $apiUser->getUser();
     }
 
     public function addReader($reader, $class)
@@ -71,8 +77,7 @@ class FrontendApi
                 );
             break;
             case '/user':
-                $apiUser = new ApiUser;
-                if ($user = $apiUser->getUser()) {
+                if ($this->user) {
                     $result = [
                         'id' => intVal($user->id),
                         'username' => $user->username,
