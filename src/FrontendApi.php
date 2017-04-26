@@ -87,24 +87,23 @@ class FrontendApi
                 }
             break;
             case '/':
-                $result = PageHelper::getPage(
-                    $request->query->get('url', null)
+                $result = new \stdClass;
+                $result->page = PageHelper::getPage(
+                    $request->query->get('url', null),
+                    true
                 );
-                if (!$result) {
-                    foreach ($this->readers as $reader => $readerClass) {
-                        $result = $this->handleReaders(
-                            $reader,
-                            $request->query->get('url', null)
-                        );
-                        if ($result) {
-                            $result = [$reader => $result];
-                            break;
-                        }
+                $readerResult = null;
+                foreach ($this->readers as $reader => $readerClass) {
+                    $readerResult = $this->handleReaders(
+                        $reader,
+                        $request->query->get('url', null)
+                    );
+                    if ($readerResult) {
+                        $result->{$reader} = $readerResult;
+                        break;
                     }
-                } else {
-                    $result = ['page' => $result];
                 }
-                if (!$result) {
+                if (!$result->page && !$readerResult) {
                     return new Response(
                         json_encode(['error' => Response::HTTP_NOT_FOUND]),
                         Response::HTTP_NOT_FOUND,
