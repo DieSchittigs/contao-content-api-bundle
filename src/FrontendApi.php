@@ -92,7 +92,6 @@ class FrontendApi
                     $request->query->get('url', null),
                     true
                 );
-                $readerResult = null;
                 foreach ($this->readers as $reader => $readerClass) {
                     $readerResult = $this->handleReaders(
                         $reader,
@@ -103,7 +102,7 @@ class FrontendApi
                         break;
                     }
                 }
-                if (!$result->page && !$readerResult) {
+                if (!$result) {
                     return new Response(
                         json_encode(['error' => Response::HTTP_NOT_FOUND]),
                         Response::HTTP_NOT_FOUND,

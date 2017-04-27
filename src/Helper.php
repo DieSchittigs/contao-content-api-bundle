@@ -2,7 +2,6 @@
 
 namespace DieSchittigs\ContaoContentApi;
 
-use Contao\FilesModel;
 use Contao\Model\Collection;
 use Contao\Model;
 use Contao\Controller;
@@ -29,6 +28,7 @@ class Helper
             $obj = (object) $instance;
         }
         foreach ($obj as $key => &$val) {
+            $originalVal = $val;
             if ($fields && !in_array($key, $fields)) {
                 unset($obj[$key]);
                 continue;
@@ -44,13 +44,15 @@ class Helper
             if ($val == '') {
                 $val = null;
             }
-            if (strpos($key, 'SRC') !== false) {
+            if (strpos($key, 'SRC') !== false && $val) {
                 if (is_array($val)) {
-                    foreach ($val as $_key => &$_val) {
-                        $_val = FilesModel::findOneBy('uuid', $_val);
+                    $__val = [];
+                    foreach ($val as $_key => $_val) {
+                        $__val[] = FileHelper::file($_val);
                     }
+                    $val = $__val;
                 } else {
-                    $val = FilesModel::findOneBy('uuid', $val);
+                    $val = FileHelper::file($val);
                 }
             }
         }
