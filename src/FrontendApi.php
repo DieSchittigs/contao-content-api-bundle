@@ -126,7 +126,7 @@ class FrontendApi
                 );
         }
         $response = new Response(
-            json_encode($result, JSON_PRETTY_PRINT|JSON_NUMERIC_CHECK),
+            json_encode($result, JSON_NUMERIC_CHECK),
             Response::HTTP_OK,
             ['Content-Type', 'application/json']
         );
