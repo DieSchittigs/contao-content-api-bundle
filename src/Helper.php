@@ -27,6 +27,8 @@ class Helper
         } else {
             $obj = (object) $instance;
         }
+        $imageSize = null;
+        $images = [];
         foreach ($obj as $key => &$val) {
             $originalVal = $val;
             if ($fields && !in_array($key, $fields)) {
@@ -44,16 +46,22 @@ class Helper
             if ($val == '') {
                 $val = null;
             }
+            if($key == 'size'){
+                $imageSize = $val;
+            }
             if (strpos($key, 'SRC') !== false && $val) {
-                if (is_array($val)) {
-                    $__val = [];
-                    foreach ($val as $_key => $_val) {
-                        $__val[] = FileHelper::file($_val);
-                    }
-                    $val = $__val;
-                } else {
-                    $val = FileHelper::file($val);
+                $images[$key] = $val;
+            }
+        }
+        foreach($images as $key => $image){
+            if (is_array($image)) {
+                $val = [];
+                foreach ($image as $_key => $_val) {
+                    $val[] = FileHelper::file($_val, $imageSize);
                 }
+                $obj[$key] = $val;
+            } else {
+                $obj[$key] = FileHelper::file($image, $imageSize);
             }
         }
         return (object) $obj;
@@ -67,6 +75,9 @@ class Helper
         $html = str_replace('"'.$apiScript, '"', $html);
         $html = str_replace('src="files', 'src="/files', $html);
         $html = str_replace('href="files', 'href="/files', $html);
+        $html = str_replace('src="assets', 'src="/assets', $html);
+        $html = str_replace('href="assets', 'href="/assets', $html);
+        $html = str_replace('srcset="assets', 'href="/assets', $html);
         return $html;
     }
 

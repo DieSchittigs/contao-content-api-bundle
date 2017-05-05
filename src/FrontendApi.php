@@ -86,6 +86,11 @@ class FrontendApi
                     ];
                 }
             break;
+            case '/module':
+                $result = ModuleHelper::get(
+                    $request->query->get('id', null)
+                );
+            break;
             case '/':
                 $result = new \stdClass;
                 $result->page = PageHelper::getPage(
