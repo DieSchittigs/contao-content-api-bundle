@@ -48,9 +48,7 @@ class PageHelper
     public static function getPage($url, $ignoreUnequalAlias = false)
     {
         if($url == '/' || $url == '/'.Helper::defaultLang().'/'){
-            $rootId = Frontend::getRootPageFromUrl()->id;
-            $rootPage = PageModel::findByIdOrAlias($rootId);
-            $page = PageModel::findFirstPublishedByPid($rootId);
+            $page = PageModel::findByIdOrAlias('index');
         } else {
             $urlAlias = Helper::urlToAlias($url);
             $pageAlias = Frontend::getPageIdFromUrl();
