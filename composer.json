@@ -15,7 +15,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "DieSchittigs\\ContaoContentApi\\" : "src/"
+            "DieSchittigs\\ContaoContentApiBundle\\" : "src/"
         },
         "classmap": [
             "src/Resources/contao/"
