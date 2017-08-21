@@ -89,7 +89,7 @@ class Helper
     public static function urlToAlias($url)
     {
         $suffix = Config::get('urlSuffix');
-        if (strpos($url, $suffix) === false) {
+        if ($suffix && strpos($url, $suffix) === false) {
             return null;
         }
         if (substr($url, 0, 1) == '/') {
@@ -106,7 +106,7 @@ class Helper
                 return null;
             }
         }
-        return substr($url, 0, -strlen($suffix));
+        return substr($url, 0, ((strlen($suffix)>0) ? -strlen($suffix) : strlen($url)));
     }
 
     public static function defaultLang(){
