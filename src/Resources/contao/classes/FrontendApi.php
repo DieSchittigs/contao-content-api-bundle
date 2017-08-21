@@ -18,20 +18,8 @@ class FrontendApi
     ];
     private $user;
 
-    public function __construct($loader, $readers = null)
+    public function __construct($readers = null)
     {
-        define('BYPASS_TOKEN_CHECK', true);
-        define('TL_MODE', 'FE');
-        AnnotationRegistry::registerLoader([$loader, 'loadClass']);
-        ManagerBundlePlugin::autoloadModules(dirname(__DIR__).'/system/modules');
-        $kernel = new ContaoKernel('prod', false);
-        $kernel->setRootDir(dirname(__DIR__).'/app');
-        $request = Request::create('/_contao/initialize', 'GET');
-        $request->attributes->set('_scope', 'frontend');
-        $kernel->handle($request);
-        if ($readers) {
-            $this->readers = $readers;
-        }
         $apiUser = new ApiUser;
         $this->user = $apiUser->getUser();
     }
@@ -59,23 +47,23 @@ class FrontendApi
 
         $result = null;
         switch ($request->getPathInfo()) {
-            case '/sitemap':
+            case '/api/sitemap':
                 $result = SitemapHelper::getSitemap(
                     $request->query->get('lang', null)
                 );
             break;
-            case '/page':
+            case '/api/page':
                 $result = PageHelper::getPage(
                     $request->query->get('url', null)
                 );
             break;
-            case '/text':
+            case '/api/text':
                 $result = TextHelper::get(
                     explode(',', $request->query->get('file', 'default')),
                     $request->query->get('lang', null)
                 );
             break;
-            case '/user':
+            case '/api/user':
                 if ($this->user) {
                     $result = [
                         'id' => intVal($user->id),
@@ -85,12 +73,12 @@ class FrontendApi
                     ];
                 }
             break;
-            case '/module':
+            case '/api/module':
                 $result = ModuleHelper::get(
                     $request->query->get('id', null)
                 );
             break;
-            case '/':
+            case '/api/':
                 $result = new \stdClass;
                 $result->page = PageHelper::getPage(
                     $request->query->get('url', null),
@@ -114,27 +102,8 @@ class FrontendApi
                     );
                 }
             break;
-            default:
-                $reader = substr($request->getPathInfo(), 1);
-                $result = $this->handleReaders(
-                    $reader,
-                    $request->query->get('url', null)
-                );
-                if ($result) {
-                    break;
-                }
-                return new Response(
-                    json_encode(['error' => Response::HTTP_NOT_FOUND]),
-                    Response::HTTP_NOT_FOUND,
-                    ['Content-Type', 'application/json']
-                );
         }
-        $response = new Response(
-            json_encode($result, JSON_NUMERIC_CHECK),
-            Response::HTTP_OK,
-            ['Content-Type', 'application/json']
-        );
-        return $response;
+        return $result;
     }
 
     private function handleReaders($reader, $url)
