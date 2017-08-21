@@ -25,5 +25,7 @@
             "src/Resources/contao/dca/"
 		]
     },
-    "minimum-stability": "stable"
+    "extra": {
+		"contao-manager-plugin": "DieSchittigs\\ContaoContentApiBundle\\ContaoManager\\Plugin"
+	}
 }
