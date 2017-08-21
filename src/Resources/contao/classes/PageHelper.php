@@ -1,6 +1,6 @@
 <?php
 
-namespace DieSchittigs\ContaoContentApi;
+namespace DieSchittigs\ContaoContentApiBundle;
 
 use Contao\PageModel;
 use Contao\ArticleModel;
@@ -48,7 +48,9 @@ class PageHelper
     public static function getPage($url, $ignoreUnequalAlias = false)
     {
         if($url == '/' || $url == '/'.Helper::defaultLang().'/'){
-            $page = PageModel::findByIdOrAlias('index');
+            $rootId = Frontend::getRootPageFromUrl()->id;
+            $rootPage = PageModel::findByIdOrAlias($rootId);
+            $page = PageModel::findFirstPublishedByPid($rootId);
         } else {
             $urlAlias = Helper::urlToAlias($url);
             $pageAlias = Frontend::getPageIdFromUrl();

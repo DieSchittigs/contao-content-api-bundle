@@ -1,9 +1,10 @@
 {
-    "name": "dieschittigs/contao-content-api",
+    "name": "dieschittigs/contao-content-api-bundle",
     "description": "Access Contao content via an easy to use API",
-    "type": "library",
+    "type": "contao-bundle",
     "require": {
-
+        "php": "^5.6|^7.0",
+        "contao/core-bundle": "^4.4"
     },
     "license": "MIT License",
     "authors": [
@@ -15,7 +16,14 @@
     "autoload": {
         "psr-4": {
             "DieSchittigs\\ContaoContentApi\\" : "src/"
-        }
+        },
+        "classmap": [
+            "src/Resources/contao/"
+		],
+		"exclude-from-classmap": [
+            "src/Resources/contao/config/",
+            "src/Resources/contao/dca/"
+		]
     },
     "minimum-stability": "stable"
 }

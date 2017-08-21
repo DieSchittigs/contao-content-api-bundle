@@ -1,6 +1,6 @@
 <?php
 
-namespace DieSchittigs\ContaoContentApi;
+namespace DieSchittigs\ContaoContentApiBundle;
 
 use Contao\ManagerBundle\ContaoManager\Plugin as ManagerBundlePlugin;
 use Contao\ManagerBundle\HttpKernel\ContaoCache;

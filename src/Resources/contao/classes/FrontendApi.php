@@ -1,6 +1,6 @@
 <?php
 
-namespace DieSchittigs\ContaoContentApi;
+namespace DieSchittigs\ContaoContentApiBundle;
 
 use Contao\ManagerBundle\ContaoManager\Plugin as ManagerBundlePlugin;
 use Contao\ManagerBundle\HttpKernel\ContaoCache;
@@ -22,7 +22,6 @@ class FrontendApi
     {
         define('BYPASS_TOKEN_CHECK', true);
         define('TL_MODE', 'FE');
-        define('BE_USER_LOGGED_IN', false);
         AnnotationRegistry::registerLoader([$loader, 'loadClass']);
         ManagerBundlePlugin::autoloadModules(dirname(__DIR__).'/system/modules');
         $kernel = new ContaoKernel('prod', false);

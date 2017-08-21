@@ -1,5 +1,5 @@
 <?php
-namespace DieSchittigs\ContaoContentApi;
+namespace DieSchittigs\ContaoContentApiBundle;
 
 use Contao\System;
 use Contao\Frontend;

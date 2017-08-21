@@ -1,6 +1,6 @@
 <?php
 
-namespace DieSchittigs\ContaoContentApi;
+namespace DieSchittigs\ContaoContentApiBundle;
 
 use Contao\Model\Collection;
 use Contao\Model;

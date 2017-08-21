@@ -1,0 +1,3 @@
+content_api:
+    resource: "@ContaoContentApiBundle/Controller"
+    type: annotation
