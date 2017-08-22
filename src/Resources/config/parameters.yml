@@ -1,0 +1,3 @@
+parameters:
+    content_api_readers:
+        news: NewsModel

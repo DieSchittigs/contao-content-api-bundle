@@ -23,9 +23,9 @@ Please note that the API is **not compatible with Contao 3.x**.
 Install [composer](https://getcomposer.org) if you haven't already,
 enter this command in the main directory of your Contao installation:
 
-    composer require dieschittigs/contao-content-api
+    composer require dieschittigs/contao-content-api-bundle
 
-Contao Content API is now installed.
+Contao Content API is now installed and ready to use.
 
 ## Usage
 
@@ -37,15 +37,15 @@ Gets the sitemap (=all pages below root).
 
 ##### /api/page?url=/about/team.html
 
-Gets the page, including all articles and contents at this URL.
+Gets the page, including all articles and contents at the `url`.
 
 ##### /api/news?url=/news/new-website.html
 
-Gets the news reader content from the URL
+Gets the news reader content from the `url`
 
 ##### /api/?url=/page/or/newsarticle.html
 
-Tries to get the page at this URL, or content from a reader
+Tries to get the page at the `url`, and contents from any reader
 
 ##### /api/user
 
@@ -60,16 +60,16 @@ have a multilingual website.
 
 ## Custom readers
 
-**Warning: Doesn't work right now**
-
 Contao has the concept of Reader Module (e.g. News Reader). These can be
 inserted anywhere inside of an article where they read the URL to display
 their contents. If you want to add additional Reader Modules, you can do
-so by adding them in your `api.php`.
+so by adding them in your `parameters.yml`.
 
+    parameters:
     ...
-    $api = new FrontendApi($loader);
-    $api->addReader('blog', 'BlogModel');
+        content_api_readers:
+            news: NewsModel
+            blog: BlogModel
     ...
 
 Please note that the second parameter is the **model** class, **not the module**
@@ -77,7 +77,7 @@ class. The new reader is now available at
 
 ##### /api/blog?url=/blog/detail/on-the-topic.html
 
-or, even more convenient, at
+or, if you want to include the articles, at
 
 ##### /api?url=/blog/detail/on-the-topic.html
 

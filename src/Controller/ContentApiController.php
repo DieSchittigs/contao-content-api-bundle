@@ -14,11 +14,9 @@ use Symfony\Component\HttpFoundation\Request;
 class ContentApiController extends Controller
 {
 
-    public function __construct(){
-        $this->frontendApi = new FrontendApi();
-    }
-
     private function handle(Request $request){
+        $readers = $this->getParameter('content_api_readers');
+        $this->frontendApi = new FrontendApi($readers);
         $this->container->get('contao.framework')->initialize();
         return $this->json($this->frontendApi->handle($request));
     }
@@ -69,6 +67,16 @@ class ContentApiController extends Controller
      * @Route("/", name="content_api_auto")
      */
     public function indexAction(Request $request)
+    {
+        return $this->handle($request);
+    }
+
+    /**
+     * @return Response
+     *
+     * @Route("/{reader}", name="content_api_reader")
+     */
+    public function readerAction(Request $request)
     {
         return $this->handle($request);
     }

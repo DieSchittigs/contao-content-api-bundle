@@ -20,6 +20,7 @@ class FrontendApi
 
     public function __construct($readers = null)
     {
+        if($readers) $this->readers = $readers;
         $apiUser = new ApiUser;
         $this->user = $apiUser->getUser();
     }
@@ -85,28 +86,26 @@ class FrontendApi
                     true
                 );
                 foreach ($this->readers as $reader => $readerClass) {
-                    $readerResult = $this->handleReaders(
+                    $readerResult = $this->handleReader(
                         $reader,
                         $request->query->get('url', null)
                     );
                     if ($readerResult) {
                         $result->{$reader} = $readerResult;
-                        break;
                     }
                 }
-                if (!$result) {
-                    return new Response(
-                        json_encode(['error' => Response::HTTP_NOT_FOUND]),
-                        Response::HTTP_NOT_FOUND,
-                        ['Content-Type', 'application/json']
-                    );
-                }
             break;
+            default:
+                $reader = substr($request->getPathInfo(), 5);
+                $result = $this->handleReader(
+                    $reader,
+                    $request->query->get('url', null)
+                );
         }
         return $result;
     }
 
-    private function handleReaders($reader, $url)
+    private function handleReader($reader, $url)
     {
         if (array_key_exists($reader, $this->readers)) {
             return ReaderHelper::handle(

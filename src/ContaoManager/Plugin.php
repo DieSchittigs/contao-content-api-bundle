@@ -9,11 +9,6 @@ use Contao\ManagerPlugin\Routing\RoutingPluginInterface;
 use Symfony\Component\Config\Loader\LoaderResolverInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-/**
- * Plugin for the Contao Manager.
- *
- * @author Glen Langer (BugBuster)
- */
 class Plugin implements BundlePluginInterface, RoutingPluginInterface
 {
     /**
