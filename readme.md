@@ -55,8 +55,12 @@ Gets the logged-in frontend user, if available.
 
 Gets the content of a module by id
 
+##### /api/text?file=tl_news,modules
+
+Gets the content of a language file by filename(s)
+
 All routes also take the additional `lang` parameter (e.g. `?lang=de`). If you
-have a multilingual website.
+need to override the language.
 
 ## Custom readers
 

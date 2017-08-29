@@ -81,5 +81,15 @@ class ContentApiController extends Controller
         return $this->handle($request);
     }
 
+    /**
+     * @return Response
+     *
+     * @Route("/{text}", name="content_api_text")
+     */
+    public function textAction(Request $request)
+    {
+        return $this->handle($request);
+    }
+
 
 }
