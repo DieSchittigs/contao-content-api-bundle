@@ -64,6 +64,12 @@ class FrontendApi
                     $request->query->get('lang', null)
                 );
             break;
+            case '/api/file':
+                $result = FileHelper::get(
+                    $request->query->get('path', null),
+                    $request->query->get('depth', 0)
+                );
+            break;
             case '/api/user':
                 if ($this->user) {
                     $result = [
