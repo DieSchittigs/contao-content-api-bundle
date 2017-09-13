@@ -59,6 +59,10 @@ Gets the content of a module by id
 
 Gets the content of a language file by filename(s)
 
+##### /api/file?path=files/uploads&depth=2
+
+Gets the file or directory at `path` and also it's children, limited by `depth`
+
 All routes also take the additional `lang` parameter (e.g. `?lang=de`). If you
 need to override the language.
 
