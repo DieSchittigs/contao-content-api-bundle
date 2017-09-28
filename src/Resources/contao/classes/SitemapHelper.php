@@ -10,7 +10,7 @@ class SitemapHelper
     {
         if (!$lang) $lang = Helper::defaultLang();
         $sitemap = [];
-        $rootPages = PageModel::findPublishedRootPages();
+        $rootPages = PageModel::findPublishedRootPages(['order' => 'sorting ASC']);
         foreach($rootPages as $rootPage){
             if($rootPage->language == $lang) break;
         }

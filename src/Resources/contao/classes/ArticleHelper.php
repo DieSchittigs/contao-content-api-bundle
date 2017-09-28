@@ -24,7 +24,7 @@ class ArticleHelper
                 $articles->{$article->inColumn} = [];
             }
             $_article = Helper::toObj($article);
-            $contents = ContentModel::findPublishedByPidAndTable($article->id, 'tl_article');
+            $contents = ContentModel::findPublishedByPidAndTable($article->id, 'tl_article', ['order' => 'sorting ASC']);
             if (!$contents) {
                 continue;
             }

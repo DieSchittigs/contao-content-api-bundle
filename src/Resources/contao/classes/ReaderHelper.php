@@ -23,7 +23,7 @@ class ReaderHelper
         if (!$readerModel || !Controller::isVisibleElement($readerModel)) {
             return null;
         }
-        $contents = ContentModel::findPublishedByPidAndTable($readerModel->id, $readerClass::getTable());
+        $contents = ContentModel::findPublishedByPidAndTable($readerModel->id, $readerClass::getTable(), ['order' => 'sorting ASC']);
         $_reader = Helper::toObj($readerModel);
         if ($contents) {
             foreach ($contents as $content) {

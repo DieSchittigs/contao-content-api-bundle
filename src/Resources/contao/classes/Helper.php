@@ -86,6 +86,15 @@ class Helper
         return str_replace($apiScript, '', $url);
     }
 
+    public static function urlToLanguage($url)
+    {
+        if (Config::get('addLanguageToUrl')){
+            $parts = explode('/', $url);
+            if(count($parts) >=  3 && strlen($parts[1]) == 2) return $parts[1];
+        }
+        return static::defaultLang();
+    }
+
     public static function urlToAlias($url)
     {
         $suffix = Config::get('urlSuffix');
