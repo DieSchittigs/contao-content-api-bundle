@@ -54,6 +54,16 @@ class ContentApiController extends Controller
     /**
      * @return Response
      *
+     * @Route("/file", name="content_api_file")
+     */
+    public function fileAction(Request $request)
+    {
+        return $this->handle($request);
+    }
+
+    /**
+     * @return Response
+     *
      * @Route("/module", name="content_api_module")
      */
     public function moduleAction(Request $request)
@@ -77,16 +87,6 @@ class ContentApiController extends Controller
      * @Route("/{reader}", name="content_api_reader")
      */
     public function readerAction(Request $request)
-    {
-        return $this->handle($request);
-    }
-
-    /**
-     * @return Response
-     *
-     * @Route("/{text}", name="content_api_text")
-     */
-    public function textAction(Request $request)
     {
         return $this->handle($request);
     }
