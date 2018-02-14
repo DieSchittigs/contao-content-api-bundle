@@ -5,6 +5,7 @@ namespace DieSchittigs\ContaoContentApiBundle;
 use Contao\FilesModel;
 use Contao\ImageSizeModel;
 use Contao\ImageSizeItemModel;
+use Contao\Image;
 
 class FileHelper
 {
@@ -28,6 +29,11 @@ class FileHelper
                      'height' => $size[1],
                      'resizeMode' => $size[2]
                  ];
+             }
+             try{
+                 $result->resizedSrc = Image::create($uuid, $size)->executeResize()->getResizedPath();
+             } catch (\Exception $e){
+                $result->resizedSrc = null;
              }
          }
          return $result;
