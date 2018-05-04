@@ -29,8 +29,7 @@ class Helper
         }
         $imageSize = null;
         $images = [];
-        foreach ($obj as $key => &$val) {
-            $originalVal = $val;
+        foreach ($obj as $key => $val) {
             if ($fields && !in_array($key, $fields)) {
                 unset($obj[$key]);
                 continue;
@@ -52,6 +51,7 @@ class Helper
             if (strpos($key, 'SRC') !== false && $val) {
                 $images[$key] = $val;
             }
+            $obj[$key] = $val;
         }
         foreach($images as $key => $image){
             if (is_array($image)) {
