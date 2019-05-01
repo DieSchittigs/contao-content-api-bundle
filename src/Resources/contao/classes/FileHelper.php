@@ -22,6 +22,14 @@ class FileHelper
             'filesModel' => $model
         ];
         Controller::addImageToTemplate($result, $image);
+        $result->src = "/$result->src";
+        $result->singleSRC = "/$result->singleSRC";
+        $result->picture['img']['src'] = '/' . $result->picture['img']['src'];
+        $result->picture['img']['srcset'] = '/' . $result->picture['img']['srcset'];
+        foreach($result->picture['sources'] as &$source){
+            $source['src'] = '/' . $source['src'];
+            $source['srcset'] = '/' . $source['srcset'];
+        }
         return $result;
     }
 
