@@ -3,40 +3,26 @@
 namespace DieSchittigs\ContaoContentApiBundle;
 
 use Contao\FilesModel;
-use Contao\ImageSizeModel;
-use Contao\ImageSizeItemModel;
-use Contao\Image;
+use Contao\Controller;
 
 class FileHelper
 {
     public static function file($uuid, $size = null)
     {
-         $model = FilesModel::findByUuid($uuid);
-         if(!$model) return null;
-         $result = Helper::toObj($model);
-         unset($result->pid);
-         unset($result->uuid);
-         $result->path = '/' . $result->path;
-         if($size && count($size) == 3){
-             if(is_numeric($size[2])){
-                 $result->size = Helper::toObj(ImageSizeModel::findOneById($size[2]));
-                 if($result->size){
-                     $result->size->subSizes = Helper::toObj(ImageSizeItemModel::findVisibleByPid($result->size->id));
-                 }
-             } else {
-                 $result->size = [
-                     'width' => $size[0],
-                     'height' => $size[1],
-                     'resizeMode' => $size[2]
-                 ];
-             }
-             try{
-                 $result->resizedSrc = Image::create($uuid, $size)->executeResize()->getResizedPath();
-             } catch (\Exception $e){
-                $result->resizedSrc = null;
-             }
-         }
-         return $result;
+        $result = new \stdClass;
+        $model = FilesModel::findByUuid($uuid);
+        if(!$model) return null;
+        if(!is_string($size)) $size = \serialize($size);
+        $image = [
+            'id' => $model->id,
+            'uuid' => $model->uuid,
+            'name' => $model->name,
+            'singleSRC' => $model->path,
+            'size' => $size,
+            'filesModel' => $model
+        ];
+        Controller::addImageToTemplate($result, $image);
+        return $result;
     }
 
     private static function children($uuid, $depth = 0){
@@ -66,3 +52,4 @@ class FileHelper
          return $result;
     }
 }
+
