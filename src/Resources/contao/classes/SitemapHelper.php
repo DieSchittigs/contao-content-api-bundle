@@ -8,13 +8,13 @@ class SitemapHelper
 {
     public static function getSitemap($lang = null)
     {
-        if (!$lang) $lang = Helper::defaultLang();
         $sitemap = [];
         $rootPages = PageModel::findPublishedRootPages(['order' => 'sorting ASC']);
         foreach($rootPages as $rootPage){
-            if($rootPage->language == $lang) break;
+            if($lang && $rootPage->language != $lang) continue;
+            $rootPage->loadDetails();
+            $sitemap = array_merge($sitemap, PageHelper::getSubPages($rootPage->id));
         }
-        $rootPage->loadDetails();
-        return PageHelper::getSubPages($rootPage->id);
+        return $sitemap;
     }
 }
