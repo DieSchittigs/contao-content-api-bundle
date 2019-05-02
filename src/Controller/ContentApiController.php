@@ -18,7 +18,9 @@ class ContentApiController extends Controller
         $readers = $this->getParameter('content_api_readers');
         $this->frontendApi = new FrontendApi($readers);
         $this->container->get('contao.framework')->initialize();
-        return $this->json($this->frontendApi->handle($request));
+        $response = $this->json($this->frontendApi->handle($request));
+        $response->headers->add(['Access-Control-Allow-Origin' => '*']);
+        return $response;
     }
 
     /**
