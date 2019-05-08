@@ -28,6 +28,7 @@ class FileHelper
         $result->picture['img']['srcset'] = '/' . $result->picture['img']['srcset'];
         unset($image['uuid']);
         $result->file = Helper::toObj($model, array_keys($image));
+        $result->file->mime = @\mime_content_type(TL_ROOT . '/' . $model->path);
         $result->src = "/$result->src";
         $result->singleSRC = "/$result->singleSRC";
         foreach($result->picture['sources'] as &$source){
