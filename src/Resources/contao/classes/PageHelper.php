@@ -16,7 +16,7 @@ class PageHelper
     public static function getSubPages($pageId)
     {
         $subPages = [];
-        $pages = PageModel::findPublishedByPid($pageId);
+        $pages = PageModel::findPublishedByPid($pageId, ['order' => 'sorting']);
         if (!$pages) {
             return $subPages;
         }

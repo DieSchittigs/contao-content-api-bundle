@@ -2,8 +2,7 @@
 
 namespace DieSchittigs\ContaoContentApiBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 use DieSchittigs\ContaoContentApiBundle\FrontendApi;
@@ -19,7 +18,9 @@ class ContentApiController extends Controller
         $readers = $this->getParameter('content_api_readers');
         $this->frontendApi = new FrontendApi($readers);
         $this->container->get('contao.framework')->initialize();
-        return $this->json($this->frontendApi->handle($request));
+        $response = $this->json($this->frontendApi->handle($request));
+        $response->headers->add(['Access-Control-Allow-Origin' => '*']);
+        return $response;
     }
 
     /**
