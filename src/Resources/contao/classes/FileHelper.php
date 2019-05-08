@@ -17,15 +17,19 @@ class FileHelper
             'id' => $model->id,
             'uuid' => $model->uuid,
             'name' => $model->name,
+            'extension' => $model->extension,
             'singleSRC' => $model->path,
+            'meta' => $model->meta,
             'size' => $size,
             'filesModel' => $model
         ];
         Controller::addImageToTemplate($result, $image);
-        $result->src = "/$result->src";
-        $result->singleSRC = "/$result->singleSRC";
         $result->picture['img']['src'] = '/' . $result->picture['img']['src'];
         $result->picture['img']['srcset'] = '/' . $result->picture['img']['srcset'];
+        unset($image['uuid']);
+        $result->file = Helper::toObj($model, array_keys($image));
+        $result->src = "/$result->src";
+        $result->singleSRC = "/$result->singleSRC";
         foreach($result->picture['sources'] as &$source){
             $source['src'] = '/' . $source['src'];
             $source['srcset'] = '/' . $source['srcset'];
