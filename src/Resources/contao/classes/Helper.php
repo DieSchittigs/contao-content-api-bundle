@@ -8,6 +8,7 @@ use Contao\Controller;
 use Contao\Module;
 use Contao\Config;
 use Contao\PageModel;
+use Contao\InsertTags;
 
 class Helper
 {
@@ -16,6 +17,7 @@ class Helper
         if (!$instance) {
             return null;
         }
+        $it = new InsertTags;
         if ($instance instanceof Collection) {
             $arr = [];
             foreach ($instance->getModels() as $row) {
@@ -50,6 +52,9 @@ class Helper
             }
             if (strpos($key, 'SRC') !== false && $val) {
                 $images[$key] = $val;
+            }
+            if(is_string($val)){
+                $val = $it->replace($val);
             }
             $obj[$key] = $val;
         }
