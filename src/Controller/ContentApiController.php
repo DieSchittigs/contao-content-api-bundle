@@ -5,6 +5,7 @@ namespace DieSchittigs\ContaoContentApiBundle\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use DieSchittigs\ContaoContentApiBundle\FrontendApi;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -18,7 +19,8 @@ class ContentApiController extends Controller
         $readers = $this->getParameter('content_api_readers');
         $this->frontendApi = new FrontendApi($readers);
         $this->container->get('contao.framework')->initialize();
-        $response = $this->json($this->frontendApi->handle($request));
+        $response = new JsonResponse($this->frontendApi->handle($request));
+        $response->setEncodingOptions(JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE);
         $response->headers->add(['Access-Control-Allow-Origin' => '*']);
         return $response;
     }
