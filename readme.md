@@ -35,6 +35,10 @@ Once installed, the following routes are available:
 
 Gets the sitemap (=all pages below root).
 
+##### /api/urls[?file=sitemap]
+
+Gets all URLs from the generated sitemap XML(s). If you define a `file`, only that XML will be parsed.
+
 ##### /api/page?url=/about/team.html
 
 Gets the page, including all articles and contents at the `url`.

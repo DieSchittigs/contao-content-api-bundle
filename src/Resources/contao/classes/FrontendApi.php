@@ -85,6 +85,10 @@ class FrontendApi
                     $request->query->get('id', null)
                 );
             break;
+            case '/api/urls':
+                $file = $request->query->get('file', null);
+                $result = UrlHelper::getUrls($file);
+            break;
             case '/api/':
                 $result = new \stdClass;
                 $result->page = PageHelper::getPage(
