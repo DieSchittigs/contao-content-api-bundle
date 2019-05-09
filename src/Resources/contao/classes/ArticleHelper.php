@@ -35,6 +35,9 @@ class ArticleHelper
                 if ($content->type === 'module') {
                     $content->subModule = ContentElementHelper::module($content, $article->inColumn);
                 }
+                if ($content->type === 'form') {
+                    $content->subForm = ContentElementHelper::form($content);
+                }
                 $_article->content[] = Helper::toObj($content);
             }
             $module = new ModuleArticle($article);
