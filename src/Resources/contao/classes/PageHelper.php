@@ -10,6 +10,7 @@ use Contao\Frontend;
 use Contao\Model;
 use Contao\Controller;
 use Contao\ModuleArticle;
+use Contao\Input;
 
 class PageHelper
 {
@@ -47,24 +48,26 @@ class PageHelper
 
     public static function getPage($url, $ignoreUnequalAlias = false)
     {
-        $urlLanguage = Helper::urlToLanguage($url);
-        if($url == '/' || $url == '/'.$urlLanguage.'/'){
-            $rootId = Frontend::getRootPageFromUrl()->id;
-            $rootPage = PageModel::findByIdOrAlias($rootId);
-            $page = PageModel::findFirstPublishedByPid($rootId);
-        } else {
-            $urlAlias = Helper::urlToAlias($url);
-            $pageAlias = Frontend::getPageIdFromUrl();
-            if (!$pageAlias) {
-                return null;
-            }
-            if (!$ignoreUnequalAlias && $urlAlias != $pageAlias) {
-                return null;
-            }
-            $pages = PageModel::findPublishedByIdOrAlias($pageAlias);
-            foreach($pages as $page){
-                $page->loadDetails();
-                if($page->language == $urlLanguage) break;
+        $page = PageModel::findByUrl(substr($url, 1));
+        if(!$page){
+            $urlLanguage = Helper::urlToLanguage($url);
+            if($url == '/' || $url == '/'.$urlLanguage.'/'){
+                $rootPage = PageModel::findBy(['published=?', 'type=?', 'language=?'], ['1', 'root', $urlLanguage]);
+                $page = PageModel::findFirstPublishedByPid($rootPage->id);
+            } else {
+                $urlAlias = Helper::urlToAlias($url);
+                $pageAlias = Frontend::getPageIdFromUrl();
+                if (!$pageAlias) {
+                    return null;
+                }
+                if (!$ignoreUnequalAlias && $urlAlias != $pageAlias) {
+                    return null;
+                }
+                $pages = PageModel::findPublishedByIdOrAlias($pageAlias);
+                foreach($pages as $page){
+                    $page->loadDetails();
+                    if($page->language == $urlLanguage) break;
+                }
             }
         }
         if (!$page) {
