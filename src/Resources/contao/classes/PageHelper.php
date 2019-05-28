@@ -42,7 +42,7 @@ class PageHelper
         if ($includeSubPages) {
             $_page->subPages = static::getSubPages($page->id, false, false);
         }
-        $_page->url = Helper::replaceURL($page->getFrontendUrl());
+        $_page->url = $page->getFrontendUrl();
         return $_page;
     }
 
