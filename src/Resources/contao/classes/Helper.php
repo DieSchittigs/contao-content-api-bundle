@@ -73,22 +73,10 @@ class Helper
     }
     public static function replaceHTML($html)
     {
-        $apiScript = substr($_SERVER['SCRIPT_NAME'], 1);
         $html = Controller::replaceInsertTags($html);
         $html = trim($html);
         $html = preg_replace("/[[:blank:]]+/", " ", $html);
-        $html = str_replace('"'.$apiScript, '"', $html);
-        $html = str_replace('src="files', 'src="/files', $html);
-        $html = str_replace('href="files', 'href="/files', $html);
-        $html = str_replace('src="assets', 'src="/assets', $html);
-        $html = str_replace('href="assets', 'href="/assets', $html);
-        $html = str_replace('srcset="assets', 'href="/assets', $html);
         return $html;
-    }
-
-    public static function replaceURL($url){
-        $apiScript = substr($_SERVER['SCRIPT_NAME'], 1);
-        return str_replace($apiScript, '', $url);
     }
 
     public static function urlToLanguage($url)
