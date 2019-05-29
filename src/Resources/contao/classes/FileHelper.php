@@ -17,21 +17,15 @@ class FileHelper
             'id' => $model->id,
             'uuid' => $model->uuid,
             'name' => $model->name,
-            'extension' => $model->extension,
             'singleSRC' => $model->path,
-            'meta' => $model->meta,
             'size' => $size,
             'filesModel' => $model
         ];
         Controller::addImageToTemplate($result, $image);
-        $result->picture['img']['src'] = '/' . $result->picture['img']['src'];
-        $result->picture['img']['srcset'] = '/' . $result->picture['img']['srcset'];
-        unset($image['uuid']);
-        $result->file = Helper::toObj($model, array_keys($image));
-        $result->file->mime = null;
-        $result->file->mime = @\mime_content_type(TL_ROOT . '/' . $model->path);
         $result->src = "/$result->src";
         $result->singleSRC = "/$result->singleSRC";
+        $result->picture['img']['src'] = '/' . $result->picture['img']['src'];
+        $result->picture['img']['srcset'] = '/' . $result->picture['img']['srcset'];
         foreach($result->picture['sources'] as &$source){
             $source['src'] = '/' . $source['src'];
             $source['srcset'] = '/' . $source['srcset'];

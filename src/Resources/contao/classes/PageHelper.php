@@ -2,6 +2,7 @@
 
 namespace DieSchittigs\ContaoContentApiBundle;
 
+use DieSchittigs\ContaoContentApiBundle\PageApi;
 use Contao\PageModel;
 use Contao\ArticleModel;
 use Contao\FilesModel;
@@ -10,7 +11,6 @@ use Contao\Frontend;
 use Contao\Model;
 use Contao\Controller;
 use Contao\ModuleArticle;
-use Contao\Input;
 
 class PageHelper
 {
@@ -42,40 +42,49 @@ class PageHelper
         if ($includeSubPages) {
             $_page->subPages = static::getSubPages($page->id, false, false);
         }
-        $_page->url = $page->getFrontendUrl();
+        $_page->url = Helper::replaceURL($page->getFrontendUrl());
         return $_page;
     }
 
     public static function getPage($url, $ignoreUnequalAlias = false)
     {
-        $page = PageModel::findByUrl(substr($url, 1));
-        if(!$page){
-            $urlLanguage = Helper::urlToLanguage($url);
-            if($url == '/' || $url == '/'.$urlLanguage.'/'){
-                $rootPage = PageModel::findBy(['published=?', 'type=?', 'language=?'], ['1', 'root', $urlLanguage]);
-                $page = PageModel::findFirstPublishedByPid($rootPage->id);
-            } else {
-                $urlAlias = Helper::urlToAlias($url);
-                $pageAlias = Frontend::getPageIdFromUrl();
-                if (!$pageAlias) {
-                    return null;
-                }
-                if (!$ignoreUnequalAlias && $urlAlias != $pageAlias) {
-                    return null;
-                }
-                $pages = PageModel::findPublishedByIdOrAlias($pageAlias);
-                foreach($pages as $page){
-                    $page->loadDetails();
-                    if($page->language == $urlLanguage) break;
-                }
+        $urlLanguage = Helper::urlToLanguage($url);
+        if($url == '/' || $url == '/'.$urlLanguage.'/'){
+            $rootId = Frontend::getRootPageFromUrl()->id;
+            $rootPage = PageModel::findByIdOrAlias($rootId);
+            $page = PageModel::findFirstPublishedByPid($rootId);
+        } else {
+            $urlAlias = Helper::urlToAlias($url);
+            $pageAlias = Frontend::getPageIdFromUrl();
+            if (!$pageAlias) {
+                return null;
+            }
+            if (!$ignoreUnequalAlias && $urlAlias != $pageAlias) {
+                return null;
+            }
+            $pages = PageModel::findPublishedByIdOrAlias($pageAlias);
+            foreach($pages as $page){
+                $page->loadDetails();
+                if($page->language == $urlLanguage) break;
             }
         }
         if (!$page) {
             return;
         }
         Controller::setStaticUrls($page);
-        $_page = self::parsePage($page);
-        $_page->articles = ArticleHelper::pageArticles($page->id);
-        return $_page;
+        $objPage = self::parsePage($page);
+
+        $objHandler = new $GLOBALS['TL_PTY']['api']();
+
+        // Backwards compatibility
+        if (!method_exists($objHandler, 'getResponse')) {
+            $Page = $objHandler->generate($objPage, true);
+        } else {
+            $Page = $objHandler->getResponse($objPage);
+        }
+
+        // $objPage->articles = ArticleHelper::pageArticles($page->id);
+        $objPage->articles = $Page['articles'];
+        return $objPage;
     }
 }
