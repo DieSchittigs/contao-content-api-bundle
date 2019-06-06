@@ -65,7 +65,9 @@ class PageApi extends PageRegular
 	 */
 	protected function prepare($page)
 	{
-		global $objPage;
+		$objPage = new \Contao\PageModel();
+		$objPage = $objPage->findByPK($page->id);
+		$objPage->loadDetails();
 
 		$GLOBALS['TL_KEYWORDS'] = '';
 		$GLOBALS['TL_LANGUAGE'] = $objPage->language;
