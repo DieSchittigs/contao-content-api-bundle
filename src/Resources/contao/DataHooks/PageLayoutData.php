@@ -15,6 +15,7 @@ class PageLayoutData {
 	{
 		if ($this->data === null) {
             $this->data = $objLayout->row();
+            unset($this->data['Template']);
 		}
 	}
 }

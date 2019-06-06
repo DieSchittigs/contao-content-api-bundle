@@ -159,8 +159,6 @@ class PageApi extends PageRegular
 			$ArticleData = new ArticleData();
 			$GLOBALS['TL_HOOKS']['getArticle']['ArticleData'] = [$ArticleData, 'getArticle']; 
 
-			// $ContentElementData = new ContentElementData();
-
 			$TemplateData = new TemplateData();
 			$GLOBALS['TL_HOOKS']['parseTemplate']['TemplateData'] = [$TemplateData, 'parseTemplate']; 
 			$GLOBALS['TL_HOOKS']['getContentElement']['ContentElementData'] = [$TemplateData, 'getContentElement']; 
@@ -247,9 +245,8 @@ class PageApi extends PageRegular
 			}
 		}
 
-		unset($GLOBALS['TL_HOOKS']['getArticle']['ArticleData']);
 
-		// die('<pre>' . print_r($TEST, true));
+		unset($GLOBALS['TL_HOOKS']['getArticle']['ArticleData']);
 
 		$this->data->sections = $arrCustomSections;
 
