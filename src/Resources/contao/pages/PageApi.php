@@ -159,8 +159,11 @@ class PageApi extends PageRegular
 			$ArticleData = new ArticleData();
 			$GLOBALS['TL_HOOKS']['getArticle']['ArticleData'] = [$ArticleData, 'getArticle']; 
 
-			$ContentElementData = new ContentElementData();
-			$GLOBALS['TL_HOOKS']['getContentElement']['ContentElementData'] = [$ContentElementData, 'getContentElement']; 
+			// $ContentElementData = new ContentElementData();
+
+			$TemplateData = new TemplateData();
+			$GLOBALS['TL_HOOKS']['parseTemplate']['TemplateData'] = [$TemplateData, 'parseTemplate']; 
+			$GLOBALS['TL_HOOKS']['getContentElement']['ContentElementData'] = [$TemplateData, 'getContentElement']; 
 
 			foreach ($arrModules as $arrModule)
 			{
@@ -206,8 +209,8 @@ class PageApi extends PageRegular
 						$arrSections[$arrModule['col']] = [];
 					}
 					if(!empty($ArticleData->data[$arrModule['col']])) {
-						if(!empty($ContentElementData->data) && !empty(!empty($ContentElementData->data[$arrModule['col']]))) {
-							foreach($ContentElementData->data as $aid => $elements) {
+						if(!empty($TemplateData->data) && !empty(!empty($TemplateData->data[$arrModule['col']]))) {
+							foreach($TemplateData->data as $aid => $elements) {
 								$ArticleData->data[$arrModule['col']][$aid]['elements'] = $elements;
 							}
 							$ArticleData->data[$arrModule['col']];
@@ -229,8 +232,8 @@ class PageApi extends PageRegular
 						$arrSections[$arrModule['col']] = [];
 					}
 					if(!empty($ArticleData->data[$arrModule['col']])) {
-						if(!empty($ContentElementData->data) && !empty(!empty($ContentElementData->data[$arrModule['col']]))) {
-							foreach($ContentElementData->data[$arrModule['col']] as $aid => $elements) {
+						if(!empty($TemplateData->data) && !empty(!empty($TemplateData->data[$arrModule['col']]))) {
+							foreach($TemplateData->data[$arrModule['col']] as $aid => $elements) {
 								$ArticleData->data[$arrModule['col']][$aid]['elements'] = $elements;
 							}
 						}
