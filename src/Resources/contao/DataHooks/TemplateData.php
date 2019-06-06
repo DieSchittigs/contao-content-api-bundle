@@ -17,6 +17,11 @@ class TemplateData {
 
     public function getContentElement($objRow, $strBuffer, $objElement)
     {
+        $ElementModel = $objElement->getModel();
+        $this->elements[$objRow->id]->singleSRC = $ElementModel->singleSRC;
+        $this->elements[$objRow->id]->multiSRC = $ElementModel->multiSRC;
+        $this->elements[$objRow->id] = Helper::toObj($this->elements[$objRow->id], null, true);
+        /** @see &$Element in self::parseTemplate */
         $this->elements[$objRow->id]->parsedContent = $strBuffer;
     }
 		
@@ -35,7 +40,6 @@ class TemplateData {
             $Element = $template->getData();
             
             unset($Element['Template']);
-            // $Element['parsedContent'] = $template->parse();
             $Element = Helper::toObj($Element, null, true);
 
             $this->elements[$Element->id] = &$Element;
