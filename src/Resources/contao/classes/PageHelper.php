@@ -83,7 +83,6 @@ class PageHelper
             $Page = $objHandler->getResponse($objPage);
         }
 
-        // $objPage->articles = ArticleHelper::pageArticles($page->id);
         $objPage->articles = $Page['articles'];
         return $objPage;
     }

@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * This file is part of Contao.
+ *
+ * (c) Leo Feyer
+ *
+ * @license LGPL-3.0-or-later
+ */
+
 namespace DieSchittigs\ContaoContentApiBundle;
 
 use Contao\Input;
@@ -18,17 +26,21 @@ use Contao\ArticleModel;
 use Contao\PageRegular;
 use Contao\ContentModel;
 use Contao\StringUtil;
-use Contao\Frontend;
 use Contao\FrontendTemplate;
 use Contao\CoreBundle\Exception\NoLayoutSpecifiedException;
 use Contao\CoreBundle\Util\PackageUtil;
 use Symfony\Component\Cache\Adapter\AdapterInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class PageApi extends PageRegular
+/**
+ * Provide methods to handle a regular front end page.
+ *
+ * @author Leo Feyer <https://github.com/leofeyer>
+ */
+class ASDASD extends PageRegular
 {
 
-	private $data = [];
+	protected $Template = [];
 
 	/**
 	 * Generate a regular page
@@ -38,9 +50,9 @@ class PageApi extends PageRegular
 	 */
 	public function generate($objPage, $blnCheckRequest=false)
 	{
-		return $this->prepare($objPage);
-
-		$this->Template->output($blnCheckRequest);
+		die('<pre>' . var_dump($objPage, true));
+		$this->prepare($objPage);
+		return $this->Template->getData();
 	}
 
 	/**
@@ -53,7 +65,8 @@ class PageApi extends PageRegular
 	 */
 	public function getResponse($objPage, $blnCheckRequest=false)
 	{
-		return $this->prepare($objPage);
+		$this->prepare($objPage);
+		return $this->Template->getData();
 	}
 
 	/**
@@ -63,10 +76,9 @@ class PageApi extends PageRegular
 	 *
 	 * @internal Do not call this method in your code. It will be made private in Contao 5.0.
 	 */
-	protected function prepare($page)
+	protected function prepare()
 	{
 		global $objPage;
-
 		$GLOBALS['TL_KEYWORDS'] = '';
 		$GLOBALS['TL_LANGUAGE'] = $objPage->language;
 
@@ -81,7 +93,6 @@ class PageApi extends PageRegular
 		// Static URLs
 		$this->setStaticUrls();
 
-		// Get the page layout
 		$PageLayoutData = new PageLayoutData();
 		$GLOBALS['TL_HOOKS']['getPageLayout']['PageLayoutData'] = [$PageLayoutData, 'getPageLayout'];
 		
@@ -100,7 +111,10 @@ class PageApi extends PageRegular
 		// Get the page layout
 		unset($GLOBALS['TL_HOOKS']['getPageLayout']['PageLayoutData']);
 
-		
+		$Data = $PageLayoutData->data;
+
+		die('<pre>' . print_r($PageLayoutData, true));
+
 
 		/** @var ThemeModel $objTheme */
 		$objTheme = $objLayout->getRelated('pid');
@@ -137,10 +151,10 @@ class PageApi extends PageRegular
 			}
 		}
 
-		$arrSections = [];
 		// Get all modules in a single DB query
 		$objModules = ModuleModel::findMultipleByIds($arrModuleIds);
 
+		$arrArticles = $this->Template->articles;;
 		if ($objModules !== null || \in_array(0, $arrModuleIds)) // see #4137
 		{
 			$arrMapper = array();
@@ -153,12 +167,6 @@ class PageApi extends PageRegular
 					$arrMapper[$objModules->id] = $objModules->current();
 				}
 			}
-
-			$ArticleData = new ArticleData();
-			$GLOBALS['TL_HOOKS']['getArticle']['ArticleData'] = [$ArticleData, 'getArticle']; 
-
-			$ContentElementData = new ContentElementData();
-			$GLOBALS['TL_HOOKS']['getContentElement']['ContentElementData'] = [$ContentElementData, 'getContentElement']; 
 
 			foreach ($arrModules as $arrModule)
 			{
@@ -195,91 +203,47 @@ class PageApi extends PageRegular
 						continue;
 					}
 
-					
-					$FrontendModuleData = new FrontendModuleData();
-					$GLOBALS['TL_HOOKS']['getFrontendModule']['FrontendModuleData'] = [$FrontendModuleData, 'getFrontendModule'];
-					$this->getFrontendModule($arrModule['mod'], $arrModule['col']);
 
-					if(empty($arrSections[$arrModule['col']])) {
-						$arrSections[$arrModule['col']] = [];
-					}
-					if(!empty($ArticleData->data[$arrModule['col']])) {
-						if(!empty($ContentElementData->data) && !empty(!empty($ContentElementData->data[$arrModule['col']]))) {
-							foreach($ContentElementData->data as $aid => $elements) {
-								$ArticleData->data[$arrModule['col']][$aid]['elements'] = $elements;
-							}
-							$ArticleData->data[$arrModule['col']];
-						}
-						$arrSections[$arrModule['col']] = array_merge($arrSections[$arrModule['col']], $ArticleData->data[$arrModule['col']]);
-					}
-					if(!empty($FrontendModuleData->data)) {
-						$arrSections[$arrModule['col']][] = $FrontendModuleData->data;
-					}
-					unset($GLOBALS['TL_HOOKS']['getFrontendModule']['FrontendModuleData']);
+					// parent::getFrontendModule();
+					$arrArticles[$arrModule['col']] = array_merge($arrArticles[$arrModule['col']], $this->getFrontendModuleData($arrModule['mod'], $arrModule['col']));
 				}
 				else
 				{
-					$FrontendModuleData = new FrontendModuleData();
-					$GLOBALS['TL_HOOKS']['getFrontendModule']['FrontendModuleData'] = [$FrontendModuleData, 'getFrontendModule'];
-					$this->getFrontendModule($arrModule['mod'], $arrModule['col']);
-
-					if(empty($arrSections[$arrModule['col']])) {
-						$arrSections[$arrModule['col']] = [];
-					}
-					if(!empty($ArticleData->data[$arrModule['col']])) {
-						if(!empty($ContentElementData->data) && !empty(!empty($ContentElementData->data[$arrModule['col']]))) {
-							foreach($ContentElementData->data[$arrModule['col']] as $aid => $elements) {
-								$ArticleData->data[$arrModule['col']][$aid]['elements'] = $elements;
-							}
-						}
-						$arrSections[$arrModule['col']] = array_merge($arrSections[$arrModule['col']], $ArticleData->data[$arrModule['col']]);
-					}
-					if(!empty($FrontendModuleData->data)) {
-						$arrSections[$arrModule['col']][] = $FrontendModuleData->data;
-					}
-					unset($GLOBALS['TL_HOOKS']['getFrontendModule']['FrontendModuleData']);
+					$arrCustomSections[$arrModule['col']] = array_merge($arrCustomSections[$arrModule['col']], $this->getFrontendModuleData($arrModule['mod'], $arrModule['col']));
 				}
 			}
 		}
 
-		unset($GLOBALS['TL_HOOKS']['getArticle']['ArticleData']);
 
-		// die('<pre>' . print_r($TEST, true));
-
-		$this->data->sections = $arrCustomSections;
+		$this->Template->articles = $arrArticles;
+		$this->Template->sections = $arrCustomSections;
 
 		// Mark RTL languages (see #7171)
 		if ($GLOBALS['TL_LANG']['MSC']['textDirection'] == 'rtl')
 		{
-			$this->data->isRTL = true;
-		}
-		
-		$PageData = new PageData();
-		$GLOBALS['TL_HOOKS']['generatePage']['PageData'] = [$PageData, 'generatePage'];
-		// HOOK: modify the page or layout object
-		if (isset($GLOBALS['TL_HOOKS']['generatePage']) && \is_array($GLOBALS['TL_HOOKS']['generatePage']))
-		{
-			foreach ($GLOBALS['TL_HOOKS']['generatePage'] as $callback)
-			{
-				$this->import($callback[0]);
-				$this->{$callback[0]}->{$callback[1]}($objPage, $objLayout, $this);
-			}
+			$this->Template->isRTL = true;
 		}
 
-		$this->data = $PageData->data;
-		$this->data['layout'] = $PageLayoutData->data;
-		$this->data['articles'] = $arrSections;
-		
+		// // HOOK: modify the page or layout object
+		// if (isset($GLOBALS['TL_HOOKS']['generatePage']) && \is_array($GLOBALS['TL_HOOKS']['generatePage']))
+		// {
+		// 	foreach ($GLOBALS['TL_HOOKS']['generatePage'] as $callback)
+		// 	{
+		// 		$this->import($callback[0]);
+		// 		$this->{$callback[0]}->{$callback[1]}($objPage, $objLayout, $this);
+		// 	}
+		// }
+
 		// Set the page title and description AFTER the modules have been generated
-		$this->data->mainTitle = $objPage->rootPageTitle;
-		$this->data->pageTitle = $objPage->pageTitle ?: $objPage->title;
+		$this->Template->mainTitle = $objPage->rootPageTitle;
+		$this->Template->pageTitle = $objPage->pageTitle ?: $objPage->title;
 
 		// Meta robots tag
-		$this->data->robots = $objPage->robots ?: 'index,follow';
+		$this->Template->robots = $objPage->robots ?: 'index,follow';
 
 		// Remove shy-entities (see #2709)
-		$this->data->mainTitle = str_replace('[-]', '', $this->data->mainTitle);
-		$this->data->pageTitle = str_replace('[-]', '', $this->data->pageTitle);
+		$this->Template->mainTitle = str_replace('[-]', '', $this->Template->mainTitle);
+		$this->Template->pageTitle = str_replace('[-]', '', $this->Template->pageTitle);
 
 		// Fall back to the default title tag
 		if ($objLayout->titleTag == '')
@@ -288,18 +252,296 @@ class PageApi extends PageRegular
 		}
 
 		// Assign the title and description
-		$this->data->title = StringUtil::stripInsertTags($this->replaceInsertTags($objLayout->titleTag)); // see #7097
-		$this->data->description = str_replace(array("\n", "\r", '"'), array(' ', '', ''), $objPage->description);
+		$this->Template->title = StringUtil::stripInsertTags($this->replaceInsertTags($objLayout->titleTag)); // see #7097
+		$this->Template->description = str_replace(array("\n", "\r", '"'), array(' ', '', ''), $objPage->description);
 
 		// Body onload and body classes
-		$this->data->onload = trim($objLayout->onload);
-		$this->data->class = trim($objLayout->cssClass . ' ' . $objPage->cssClass);
+		$this->Template->onload = trim($objLayout->onload);
+		$this->Template->class = trim($objLayout->cssClass . ' ' . $objPage->cssClass);
 
 		// Execute AFTER the modules have been generated and create footer scripts first
 		$this->createFooterScripts($objLayout);
 		$this->createHeaderScripts($objPage, $objLayout);
+	}
 
-		return $this->data;
+	/**
+	 * Generate a front end module and return it as string
+	 *
+	 * @param mixed  $intId     A module ID or a Model object
+	 * @param string $strColumn The name of the column
+	 *
+	 * @return string The module HTML markup
+	 */
+	public function getFrontendModuleData($intId, $strColumn='main') : array
+	{
+		if (!\is_object($intId) && !\strlen($intId))
+		{
+			return [];
+		}
+
+		/** @var PageModel $objPage */
+		global $objPage;
+
+		// Articles
+		if (!\is_object($intId) && $intId == 0)
+		{
+			// Show all articles (no else block here, see #4740)
+			$objArticles = ArticleModel::findPublishedByPidAndColumn($objPage->id, $strColumn);
+
+			if ($objArticles === null)
+			{
+				return [];
+			}
+
+			$return = [];
+			$intCount = 0;
+			$blnMultiMode = ($objArticles->count() > 1);
+			$intLast = $objArticles->count() - 1;
+
+			while ($objArticles->next())
+			{
+				/** @var ArticleModel $objRow */
+				$objRow = $objArticles->current();
+
+				// Add the "first" and "last" classes (see #2583)
+				if ($intCount == 0 || $intCount == $intLast)
+				{
+					$arrCss = array();
+
+					if ($intCount == 0)
+					{
+						$arrCss[] = 'first';
+					}
+
+					if ($intCount == $intLast)
+					{
+						$arrCss[] = 'last';
+					}
+
+					$objRow->classes = $arrCss;
+				}
+
+				$return[] = $this->getArticleData($objRow, $blnMultiMode, false, $strColumn);
+				++$intCount;
+			}
+
+			return $return;
+		}
+
+		// Other modules
+		else
+		{
+			if (\is_object($intId))
+			{
+				$objRow = $intId;
+			}
+			else
+			{
+				$objRow = ModuleModel::findByPk($intId);
+
+				if ($objRow === null)
+				{
+					return [];
+				}
+			}
+
+			// Check the visibility (see #6311)
+			if (!static::isVisibleElement($objRow))
+			{
+				return [];
+			}
+
+			$strClass = Module::findClass($objRow->type);
+
+			// Return if the class does not exist
+			if (!class_exists($strClass))
+			{
+				static::log('Module class "'.$strClass.'" (module "'.$objRow->type.'") does not exist', __METHOD__, TL_ERROR);
+
+				return [];
+			}
+
+			$objRow->typePrefix = 'mod_';
+
+			/** @var Module $objModule */
+			$objModule = new $strClass($objRow, $strColumn);
+			$objModule->generate();
+
+			// $objModule = Helper::toObj($objModule);
+			
+			$Data = $objModule->Template->getData();
+			$Data['modulType'] = 'module';
+			unset($Data['Template']);
+			return [$Data];
+		}
+
+		return [];
+	}
+
+	/**
+	 * Generate an article and return it as string
+	 *
+	 * @param mixed   $varId          The article ID or a Model object
+	 * @param boolean $blnMultiMode   If true, only teasers will be shown
+	 * @param boolean $blnIsInsertTag If true, there will be no page relation
+	 * @param string  $strColumn      The name of the column
+	 *
+	 * @return string|boolean The article HTML markup or false
+	 */
+	public function getArticleData($varId, $blnMultiMode=false, $blnIsInsertTag=false, $strColumn='main')
+	{
+		/** @var PageModel $objPage */
+		global $objPage;
+
+		if (\is_object($varId))
+		{
+			$objRow = $varId;
+		}
+		else
+		{
+			if (!$varId)
+			{
+				return '';
+			}
+
+			$objRow = ArticleModel::findByIdOrAliasAndPid($varId, (!$blnIsInsertTag ? $objPage->id : null));
+
+			if ($objRow === null)
+			{
+				return false;
+			}
+		}
+
+		// Check the visibility (see #6311)
+		if (!static::isVisibleElement($objRow))
+		{
+			return '';
+		}
+
+		$objRow->modulType = 'article';
+
+		$objRow->headline = $objRow->title;
+		$objRow->multiMode = $blnMultiMode;
+
+		$objArticle = new ModuleArticle($objRow, $strColumn);
+		$objArticle->generate();
+		$Data = $objArticle->Template->getData();
+
+		$Data['content'] = $this->getArticleElements($objArticle);
+		unset($Data['Template']);
+		return $Data;
+	}
+
+	protected function getArticleElements($objArticle)
+	{
+		$arrElements = array();
+		$objCte = ContentModel::findPublishedByPidAndTable($objArticle->id, 'tl_article');
+
+		if ($objCte !== null)
+		{
+			$intCount = 0;
+			$intLast = $objCte->count() - 1;
+
+			while ($objCte->next())
+			{
+				$arrCss = array();
+
+				/** @var ContentModel $objRow */
+				$objRow = $objCte->current();
+
+				// Add the "first" and "last" classes (see #2583)
+				if ($intCount == 0 || $intCount == $intLast)
+				{
+					if ($intCount == 0)
+					{
+						$arrCss[] = 'first';
+					}
+
+					if ($intCount == $intLast)
+					{
+						$arrCss[] = 'last';
+					}
+				}
+
+				$objRow->classes = $arrCss;
+				$arrElements[] = $this->getContentElementData($objRow, $objArticle->strColumn);
+				++$intCount;
+			}
+		}
+
+		return $arrElements;
+	}
+	/**
+	 * Generate a content element and return it as string
+	 *
+	 * @param mixed  $intId     A content element ID or a Model object
+	 * @param string $strColumn The column the element is in
+	 *
+	 * @return string The content element HTML markup
+	 */
+	public function getContentElementData($intId, $strColumn='main')
+	{
+		if (\is_object($intId))
+		{
+			$objRow = $intId;
+		}
+		else
+		{
+			if (!\strlen($intId) || $intId < 1)
+			{
+				return '';
+			}
+
+			$objRow = ContentModel::findByPk($intId);
+
+			if ($objRow === null)
+			{
+				return '';
+			}
+		}
+
+		// Check the visibility (see #6311)
+		if (!static::isVisibleElement($objRow))
+		{
+			return '';
+		}
+
+		$strClass = ContentElement::findClass($objRow->type);
+
+
+		// Return if the class does not exist
+		if (!class_exists($strClass))
+		{
+			static::log('Content element class "'.$strClass.'" (content element "'.$objRow->type.'") does not exist', __METHOD__, TL_ERROR);
+
+			return '';
+		}
+
+
+		$objRow->typePrefix = 'ce_';
+
+		$strClass = ContentElement::findClass($objRow->type);
+		
+		/** @var ContentElement $objElement */
+		if($strColumn === null) {
+			$strColumn = 'main';
+		}
+
+		$LoadTemplateData = new LoadTemplateData();
+		$GLOBALS['TL_HOOKS']['parseTemplate']['LoadTemplateData'] = [$LoadTemplateData, 'onParseTemplate'];
+		
+		$objElement = new $strClass($objRow, $strColumn);
+		$strBuffer = $objElement->generate();
+		unset($GLOBALS['TL_HOOKS']['parseTemplate']['LoadTemplateData']);
+
+		$Data = $LoadTemplateData->data;
+		unset($Data['Template']);
+
+		$Data['singleSRC'] = $objRow->singleSRC;
+		$Data['parsedContent'] = $strBuffer;
+		$Data = Helper::toObj($Data, null, true);
+
+		return $Data;
 	}
 
 	/**
@@ -336,7 +578,7 @@ class PageApi extends PageRegular
 		$objPage->hasJQuery = $objLayout->addJQuery;
 		$objPage->hasMooTools = $objLayout->addMooTools;
 		$objPage->isMobile = $blnMobile;
-
+		
 		return $objLayout;
 	}
 
@@ -547,11 +789,13 @@ class PageApi extends PageRegular
 		}
 
 		// Initialize the sections
-		$this->Template->header = '';
-		$this->Template->left = '';
-		$this->Template->main = '';
-		$this->Template->right = '';
-		$this->Template->footer = '';
+		$this->Template->articles = [
+			'header' => [],
+			'left' => [],
+			'main' => [],
+			'right' => [],
+			'footer' => []
+		];
 
 		// Initialize the custom layout sections
 		$this->Template->sections = array();
@@ -574,7 +818,7 @@ class PageApi extends PageRegular
 		}
 
 		// Default settings
-		$this->Template->layout = $objLayout;
+		$this->Template->layout = $objLayout->row();
 		$this->Template->language = $GLOBALS['TL_LANGUAGE'];
 		$this->Template->charset = Config::get('characterSet');
 		$this->Template->base = Environment::get('base');
