@@ -8,16 +8,14 @@ use Contao\Controller;
 use Contao\Module;
 use Contao\Config;
 use Contao\PageModel;
-use Contao\InsertTags;
 
 class Helper
 {
-    public static function toObj($instance, $fields = null)
+    public static function toObj($instance, $fields = null, $debug=false)
     {
         if (!$instance) {
             return null;
         }
-        $it = new InsertTags;
         if ($instance instanceof Collection) {
             $arr = [];
             foreach ($instance->getModels() as $row) {
@@ -33,7 +31,7 @@ class Helper
         $images = [];
         foreach ($obj as $key => $val) {
             if ($fields && !in_array($key, $fields)) {
-                unset($obj[$key]);
+                unset($obj->$key);
                 continue;
             }
             $unserializedVal = @unserialize($val);
@@ -53,30 +51,41 @@ class Helper
             if (strpos($key, 'SRC') !== false && $val) {
                 $images[$key] = $val;
             }
-            if(is_string($val)){
-                $val = $it->replace($val);
-            }
-            $obj[$key] = $val;
+            $obj->$key = $val;
         }
+        
         foreach($images as $key => $image){
             if (is_array($image)) {
                 $val = [];
                 foreach ($image as $_key => $_val) {
-                    $val[] = FileHelper::file($_val, $imageSize);
+                    $val[] = FileHelper::file($_val, $imageSize, $debug);
                 }
-                $obj[$key] = $val;
+                $obj->$key = $val;
             } else {
-                $obj[$key] = FileHelper::file($image, $imageSize);
+                $obj->$key = FileHelper::file($image, $imageSize, $debug);
             }
         }
+        
         return (object) $obj;
     }
     public static function replaceHTML($html)
     {
+        $apiScript = substr($_SERVER['SCRIPT_NAME'], 1);
         $html = Controller::replaceInsertTags($html);
         $html = trim($html);
         $html = preg_replace("/[[:blank:]]+/", " ", $html);
+        $html = str_replace('"'.$apiScript, '"', $html);
+        $html = str_replace('src="files', 'src="/files', $html);
+        $html = str_replace('href="files', 'href="/files', $html);
+        $html = str_replace('src="assets', 'src="/assets', $html);
+        $html = str_replace('href="assets', 'href="/assets', $html);
+        $html = str_replace('srcset="assets', 'href="/assets', $html);
         return $html;
+    }
+
+    public static function replaceURL($url){
+        $apiScript = substr($_SERVER['SCRIPT_NAME'], 1);
+        return str_replace($apiScript, '', $url);
     }
 
     public static function urlToLanguage($url)

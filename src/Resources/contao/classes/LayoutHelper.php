@@ -11,9 +11,9 @@ use Contao\Model;
 use Contao\Controller;
 use Contao\ModuleArticle;
 
-class ArticleHelper
+class LayoutHelper
 {
-    public static function pageArticles($pageId)
+    public static function columnModules($pageId)
     {
         $articles = new \stdClass;
         foreach (ArticleModel::findByPid($pageId) as $article) {
@@ -42,6 +42,7 @@ class ArticleHelper
             $articles->{$article->inColumn}[] = $_article;
         }
 
+        die('<pre>' . print_r($articles, true));
         return $articles;
     }
 }
