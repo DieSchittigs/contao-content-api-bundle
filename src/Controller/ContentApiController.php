@@ -59,8 +59,8 @@ class ContentApiController extends Controller
             if (substr($url, 0, 1) != '/') {
                 $url = "/$url";
             }
-            $urlParts = explode('/', $request->query->get('url'));
-            $this->lang = count($urlParts) > 0 && strlen($urlParts[0]) == 2 ? $urlParts[0] : null;
+            $urlParts = explode('/', $url);
+            $this->lang = count($urlParts) > 1 && strlen($urlParts[1]) == 2 ? $urlParts[1] : null;
         }
         if (!$this->lang) {
             $sitemap = new Sitemap();
@@ -98,7 +98,7 @@ class ContentApiController extends Controller
     public function sitemapAction(Request $request)
     {
         $request = $this->init($request);
-        $sitemap = new Sitemap($this->lang);
+        $sitemap = new Sitemap($request->query->get('lang', null));
 
         return new ContentApiResponse($sitemap, 200, $this->headers);
     }
@@ -114,7 +114,7 @@ class ContentApiController extends Controller
     {
         $request = $this->init($request);
 
-        return new ContentApiResponse(new SitemapFlat($this->lang), 200, $this->headers);
+        return new ContentApiResponse(new SitemapFlat($request->query->get('lang', null)), 200, $this->headers);
     }
 
     /**
