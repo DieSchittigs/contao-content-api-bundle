@@ -10,9 +10,6 @@ With the Contao Content API it is possible to write the entire Frontend of your
 website in [React.js](https://facebook.github.io/react/), [Angular](https://angular.io/), [vue](https://vuejs.org/), or any other
 JS-framework. All while still using the great Contao Backend.
 
-Now that Contao 4 matures, we decided to Open Source our efforts. Mainly to get
-feedback and maybe even contribution from the community.
-
 ## Requirements
 
 You'll need an up-and-running **Contao 4.4.x** installation.
@@ -33,7 +30,11 @@ Once installed, the following routes are available:
 
 ##### /api/sitemap
 
-Gets the sitemap (=all pages below root).
+Gets the sitemap including the root pages.
+
+##### /api/sitemap/flat
+
+Gets all pages as key value pairings where the key is the URL.
 
 ##### /api/urls[?file=sitemap]
 
@@ -43,7 +44,7 @@ Gets all URLs from the generated sitemap XML(s). If you define a `file`, only th
 
 Gets the page, including all articles and contents at the `url`.
 
-##### /api/news?url=/news/new-website.html
+##### /api/newsreader?url=/news/detail/new-website.html
 
 Gets the news reader content from the `url`
 
@@ -70,7 +71,34 @@ Gets the file or directory at `path` and also it's children, limited by `depth`
 All routes also take the additional `lang` parameter (e.g. `?lang=de`). If you
 need to override the language.
 
-## Custom readers
+## Configuration
+
+### Disabling the API
+
+Edit your `parameters.yml`.
+
+    parameters:
+    …
+    content_api_enabled:
+        false
+    …
+
+The API routes are now all disabled. This may be helpful if you only
+want to use the classes included in the bundle.
+
+### Response headers
+
+Edit your `parameters.yml`.
+
+    parameters:
+    …
+    content_api_headers:
+        'Access-Control-Allow-Origin': 'https://mysite.org'
+    …
+
+These headers will be added to all responses from the API.
+
+### Custom readers
 
 Contao has the concept of Reader Module (e.g. News Reader). These can be
 inserted anywhere inside of an article where they read the URL to display
@@ -78,39 +106,73 @@ their contents. If you want to add additional Reader Modules, you can do
 so by adding them in your `parameters.yml`.
 
     parameters:
-    ...
+    …
         content_api_readers:
-            news: NewsModel
-            blog: BlogModel
-    ...
+            newsreader: NewsModel
+            blogreader: BlogModel
+    …
 
 Please note that the second parameter is the **model** class, **not the module**
 class. The new reader is now available at
 
-##### /api/blog?url=/blog/detail/on-the-topic.html
+##### /api/blogreader?url=/blog/detail/on-the-topic.html
 
-or, if you want to include the articles, at
+or, if you want to include the whole page, at
 
 ##### /api?url=/blog/detail/on-the-topic.html
 
 Internally the API tries to instantiate the model with the alias found in the url.
 It also tries to add all `ContentModels` it can find.
 
-## Tips and tricks
+## Hooks
 
-If you are using a router in JavaScript (e.g. react-router) you may want to redirect
-all frontend traffic to a single file. We found the easiest way to do so is to
-create a new `app.html` in the `/web` folder and change the redirect in `.htaccess`
-like so:
+We provide some basic hooks:
 
-    ...
-    RewriteRule ^contao %{ENV:BASE}/app.php [L]
-    RewriteRule ^api %{ENV:BASE}/app.php [L]
-    RewriteRule ^ %{ENV:BASE}/app.html [L]
-    ...
+```
+class Hook{
 
-This way all the traffic goes to your JS App, while `/contao` and `/api` still work.
+    // $GLOBALS['TL_HOOKS']['apiBeforeInit']
+    public static apiBeforeInit(Request $request){
+        return $request
+    }
+
+    // $GLOBALS['TL_HOOKS']['apiAfterInit']
+    public static apiAfterInit(Request $request){
+        return $request
+    }
+
+    // $GLOBALS['TL_HOOKS']['apiContaoJson']
+    public static apiContaoJson(ContaoJson $contaoJson, mixed $data){
+        if($data instanceof ContentModel){
+            $contaoJson->data = null;
+            // End of the line
+            return false;
+        }
+        // Do your thing, ContaoJson
+        return true;
+
+    }
+
+    // $GLOBALS['TL_HOOKS']['apiResponse']
+    public static apiResponse(mixed $data){
+        $data->tamperedWith = true;
+        return $data;
+
+    }
+}
+```
+
+## Documentation
+
+The classes crafted for the API might be a good starting point if you want
+to build anything on top of Contao.
+
+[Check out the docs here](docs/ApiIndex.md);
 
 ## Contribution
 
 Bug reports and pull requests are very welcome :)
+
+---
+
+© Die Schittigs GmbH 2019

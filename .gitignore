@@ -12,3 +12,5 @@ composer.lock
 /system/
 /web/*
 !/web/api.php
+*.phar
+_docs/
