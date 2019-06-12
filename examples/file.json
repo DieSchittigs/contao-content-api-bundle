@@ -1,0 +1,109 @@
+{
+    "id": 1384,
+    "tstamp": 1559303380,
+    "type": "folder",
+    "path": "files/appstores",
+    "extension": "",
+    "hash": "d2c17d6abdd1b1d1c795a9255eab888e",
+    "found": 1,
+    "name": "appstores",
+    "importantPartX": 0,
+    "importantPartY": 0,
+    "importantPartWidth": 0,
+    "importantPartHeight": 0,
+    "meta": {
+        "de": {
+            "title": "",
+            "alt": "",
+            "link": "",
+            "caption": ""
+        },
+        "en": {
+            "title": "",
+            "alt": "",
+            "link": "",
+            "caption": ""
+        },
+        "fr": {
+            "title": "",
+            "alt": "",
+            "link": "",
+            "caption": ""
+        }
+    },
+    "mime": "directory",
+    "children": [
+        {
+            "id": 1385,
+            "tstamp": 1559303390,
+            "type": "file",
+            "path": "files/appstores/store_apple.svg",
+            "extension": "svg",
+            "hash": "2c79a504bdd4b091b87a01f79000280f",
+            "found": 1,
+            "name": "store_apple.svg",
+            "importantPartX": 0,
+            "importantPartY": 0,
+            "importantPartWidth": 0,
+            "importantPartHeight": 0,
+            "meta": null,
+            "mime": "image/svg",
+            "image": {
+                "width": null,
+                "height": null,
+                "picture": {
+                    "img": {
+                        "srcset": "files/appstores/store_apple.svg",
+                        "src": "files/appstores/store_apple.svg"
+                    },
+                    "sources": [],
+                    "alt": ""
+                },
+                "src": "files/appstores/store_apple.svg",
+                "singleSRC": null,
+                "linkTitle": "",
+                "fullsize": false,
+                "addBefore": true,
+                "margin": "",
+                "addImage": true
+            },
+            "children": []
+        },
+        {
+            "id": 1386,
+            "tstamp": 1559303390,
+            "type": "file",
+            "path": "files/appstores/store_google.svg",
+            "extension": "svg",
+            "hash": "adf097bd3f74b7a683ac30ed2adba788",
+            "found": 1,
+            "name": "store_google.svg",
+            "importantPartX": 0,
+            "importantPartY": 0,
+            "importantPartWidth": 0,
+            "importantPartHeight": 0,
+            "meta": null,
+            "mime": "image/svg",
+            "image": {
+                "width": null,
+                "height": null,
+                "picture": {
+                    "img": {
+                        "srcset": "files/appstores/store_google.svg",
+                        "src": "files/appstores/store_google.svg"
+                    },
+                    "sources": [],
+                    "alt": ""
+                },
+                "src": "files/appstores/store_google.svg",
+                "singleSRC": null,
+                "linkTitle": "",
+                "fullsize": false,
+                "addBefore": true,
+                "margin": "",
+                "addImage": true
+            },
+            "children": []
+        }
+    ]
+}

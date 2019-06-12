@@ -32,41 +32,61 @@ Once installed, the following routes are available:
 
 Gets the sitemap including the root pages.
 
+[Example](examples/sitemap.json)
+
 ##### /api/sitemap/flat
 
 Gets all pages as key value pairings where the key is the URL.
+
+[Example](examples/sitemap_flat.json)
 
 ##### /api/urls[?file=sitemap]
 
 Gets all URLs from the generated sitemap XML(s). If you define a `file`, only that XML will be parsed.
 
+[Example](examples/urls.json)
+
 ##### /api/page?url=/about/team.html
 
 Gets the page, including all articles and contents at the `url`.
+
+[Example](examples/page.json)
 
 ##### /api/newsreader?url=/news/detail/new-website.html
 
 Gets the news reader content from the `url`
 
+[Example](examples/newsreader.json)
+
 ##### /api/?url=/page/or/newsarticle.html
 
 Tries to get the page at the `url`, and contents from any reader
+
+[Example](examples/page_newsreader.json)
 
 ##### /api/user
 
 Gets the logged-in frontend user, if available.
 
+[Example](examples/user.json)
+
 ##### /api/module?id=5
 
 Gets the content of a module by id
+
+[Example](examples/module.json)
 
 ##### /api/text?file=tl_news,modules
 
 Gets the content of a language file by filename(s)
 
+[Example](examples/text.json)
+
 ##### /api/file?path=files/uploads&depth=2
 
 Gets the file or directory at `path` and also it's children, limited by `depth`
+
+[Example](examples/file.json)
 
 All routes also take the additional `lang` parameter (e.g. `?lang=de`). If you
 need to override the language.
@@ -167,7 +187,7 @@ class Hook{
 The classes crafted for the API might be a good starting point if you want
 to build anything on top of Contao.
 
-[Check out the docs here](docs/ApiIndex.md);
+[Check out the docs here](docs/ApiIndex.md)
 
 ## Contribution
 

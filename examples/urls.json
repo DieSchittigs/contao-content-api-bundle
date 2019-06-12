@@ -1,0 +1,356 @@
+{
+    "/de/rechtliches/impressum": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/rechtliches/impressum"
+    },
+    "/de/rechtliches/datenschutz": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/rechtliches/datenschutz"
+    },
+    "/de/rechtliches/datenschutz/allgemeine-datenschutzhinweise": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/rechtliches/datenschutz/allgemeine-datenschutzhinweise"
+    },
+    "/de/rechtliches/agb-2015": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/rechtliches/agb-2015"
+    },
+    "/de/rechtliches/agb": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/rechtliches/agb"
+    },
+    "/de/fachjargon": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon"
+    },
+    "/de/": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/"
+    },
+    "/de/cases": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/cases"
+    },
+    "/de/agentur": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/agentur"
+    },
+    "/de/jobs": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/jobs"
+    },
+    "/de/kontakt": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/kontakt"
+    },
+    "/de/kontakt/felix-schittig": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/kontakt/felix-schittig"
+    },
+    "/de/kontakt/martin-schittig": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/kontakt/martin-schittig"
+    },
+    "/de/kontakt/tobias-duehr": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/kontakt/tobias-duehr"
+    },
+    "/de/kontakt/elisa-schittig": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/kontakt/elisa-schittig"
+    },
+    "/de/container": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/container"
+    },
+    "/de/fachjargon/dsgvo": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon/dsgvo"
+    },
+    "/de/fachjargon/pwa-progressive-web-apps": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon/pwa-progressive-web-apps"
+    },
+    "/de/fachjargon/card-sorting": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon/card-sorting"
+    },
+    "/de/fachjargon/digitalisierung-von-arbeitsprozessen": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon/digitalisierung-von-arbeitsprozessen"
+    },
+    "/de/fachjargon/die-fuenf-corporates": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon/die-fuenf-corporates"
+    },
+    "/de/fachjargon/social-media": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon/social-media"
+    },
+    "/de/fachjargon/usability": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon/usability"
+    },
+    "/de/fachjargon/search-engine-optimization-kurz-seo": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon/search-engine-optimization-kurz-seo"
+    },
+    "/de/fachjargon/rgb-cmyk-pantone-ral-hks": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon/rgb-cmyk-pantone-ral-hks"
+    },
+    "/de/fachjargon/cms-content-management-system": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon/cms-content-management-system"
+    },
+    "/de/fachjargon/responsive-webdesign": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/fachjargon/responsive-webdesign"
+    },
+    "/de/jobs/frontend-development": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/jobs/frontend-development"
+    },
+    "/de/jobs/conception-digital-products": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/jobs/conception-digital-products"
+    },
+    "/de/jobs/ux-design": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/jobs/ux-design"
+    },
+    "/de/jobs/management-assistance": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/jobs/management-assistance"
+    },
+    "/de/jobs/digital-project-management": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/jobs/digital-project-management"
+    },
+    "/de/cases/walk-collection-2": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/cases/walk-collection-2"
+    },
+    "/de/cases/digital-service-assistant": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/cases/digital-service-assistant"
+    },
+    "/de/cases/schweissgeratesteuerung": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/cases/schweissgeratesteuerung"
+    },
+    "/de/cases/iconic-world": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/cases/iconic-world"
+    },
+    "/de/cases/impress": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/de/cases/impress"
+    },
+    "/en/legal/site-notice": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/legal/site-notice"
+    },
+    "/en/legal/privacy-policy": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/legal/privacy-policy"
+    },
+    "/en/legal/privacy-policy/general-data-privacy": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/legal/privacy-policy/general-data-privacy"
+    },
+    "/en/legal/terms-and-conditions": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/legal/terms-and-conditions"
+    },
+    "/en/": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/"
+    },
+    "/en/cases": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/cases"
+    },
+    "/en/agency": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/agency"
+    },
+    "/en/jobs": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/jobs"
+    },
+    "/en/contact": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/contact"
+    },
+    "/en/contact/elisa-schittig": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/contact/elisa-schittig"
+    },
+    "/en/contact/tobias-duhr": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/contact/tobias-duhr"
+    },
+    "/en/contact/martin-schittig": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/contact/martin-schittig"
+    },
+    "/en/contact/felix-schittig": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/contact/felix-schittig"
+    },
+    "/en/container": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/container"
+    },
+    "/en/cases/br-digital-service-assistant": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/cases/br-digital-service-assistant"
+    },
+    "/en/cases/iconic-world-en": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/cases/iconic-world-en"
+    },
+    "/en/cases/welding-machine-control": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/cases/welding-machine-control"
+    },
+    "/en/cases/impress-2": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/cases/impress-2"
+    },
+    "/en/cases/walk-collection": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/cases/walk-collection"
+    },
+    "/en/jobs/frontend-development-2": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/jobs/frontend-development-2"
+    },
+    "/en/jobs/conception-digital-products-2": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/jobs/conception-digital-products-2"
+    },
+    "/en/jobs/ux-design-2": {
+        "scheme": "http",
+        "host": "dev.test",
+        "port": 10100,
+        "path": "/en/jobs/ux-design-2"
+    }
+}
