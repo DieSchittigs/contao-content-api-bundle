@@ -19,8 +19,17 @@ class ApiContentElement extends AugmentedContaoModel
     public function __construct($id, $inColumn = 'main')
     {
         $this->model = ContentModel::findById($id, ['published'], ['1']);
-        if (!Controller::isVisibleElement($this->model)) {
+        if (!$this->model || !Controller::isVisibleElement($this->model)) {
             return $this->model = null;
+        }
+        $this->compiledHtml = null;
+        $ceClass = 'Contao\Content'.ucfirst($this->model->type);
+        if (class_exists($ceClass)) {
+            try {
+                $compiled = new $ceClass($this->model, $inColumn);
+                $this->compiledHtml = $compiled->generate();
+            } catch (\Exception $e) {
+            }
         }
         if ($this->type === 'module') {
             $contentModuleClass = ContentElement::findClass($this->type);
@@ -46,7 +55,11 @@ class ApiContentElement extends AugmentedContaoModel
     public static function findByPidAndTable($pid, $table = 'tl_article', $inColumn = 'main')
     {
         $contents = [];
-        foreach (ContentModel::findPublishedByPidAndTable($pid, $table, ['order' => 'sorting ASC']) as $content) {
+        $contentModels = ContentModel::findPublishedByPidAndTable($pid, $table, ['order' => 'sorting ASC']);
+        if (!$contentModels) {
+            return $contents;
+        }
+        foreach ($contentModels  as $content) {
             if (!Controller::isVisibleElement($content)) {
                 continue;
             }
