@@ -27,7 +27,7 @@ class SitemapFlat implements ContaoJsonSerializable
         $url = \mb_strtolower($url);
         $page = $this->sitemap->{$url} ?? null;
         if ($page) {
-            $page->exactUrlMatch = true;
+            $page['exactUrlMatch'] = true;
 
             return $page;
         }
