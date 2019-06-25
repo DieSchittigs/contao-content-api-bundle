@@ -25,6 +25,9 @@ class Sitemap implements \IteratorAggregate, \ArrayAccess, \Countable, ContaoJso
         } else {
             $pages = PageModel::findPublishedByPid($pid, ['order' => 'sorting ASC']);
         }
+        if (!$pages) {
+            return;
+        }
         foreach ($pages as $page) {
             $page->loadDetails();
             $page->url = $page->getFrontendUrl();
