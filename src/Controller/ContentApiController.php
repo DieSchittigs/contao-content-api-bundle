@@ -79,6 +79,9 @@ class ContentApiController extends Controller
         // Initialize Contao
         $this->container->get('contao.framework')->initialize();
         $this->apiUser = new ApiUser();
+        if (!defined('BE_USER_LOGGED_IN')) {
+            define('BE_USER_LOGGED_IN', false);
+        }
         if (isset($GLOBALS['TL_HOOKS']['apiAfterInit']) && is_array($GLOBALS['TL_HOOKS']['apiAfterInit'])) {
             foreach ($GLOBALS['TL_HOOKS']['apiAfterInit'] as $callback) {
                 $request = $callback[0]::$callback[1]($request);
