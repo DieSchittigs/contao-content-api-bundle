@@ -7,15 +7,18 @@ use Contao\PageModel;
 /**
  * Sitemap represents the actual site structure as an object tree.
  * The resulting instance can be iterated and used like an array.
- *
- * @param string $language If set, ignores other languages
- * @param int    $pid      Parent ID (for recursive calls)
  */
 class Sitemap implements \IteratorAggregate, \ArrayAccess, \Countable, ContaoJsonSerializable
 {
     protected $sitemap = [];
     public $sitemapFlat;
 
+    /**
+     * constructor.
+     *
+     * @param string $language If set, ignores other languages
+     * @param int    $pid      Parent ID (for recursive calls)
+     */
     public function __construct(string $language = null, $pid = null)
     {
         $this->sitemapFlat = new \stdClass();

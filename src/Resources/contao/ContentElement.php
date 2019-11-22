@@ -10,12 +10,15 @@ use Contao\Controller;
 
 /**
  * ApiContentElement augments ContentModel for the API.
- *
- * @param int    $id       id of the ContentModel
- * @param string $inColumn In which column does the Content Element reside in
  */
 class ApiContentElement extends AugmentedContaoModel
 {
+    /**
+     * constructor.
+     *
+     * @param int    $id       id of the ContentModel
+     * @param string $inColumn In which column does the Content Element reside in
+     */
     public function __construct($id, $inColumn = 'main')
     {
         $this->model = ContentModel::findById($id, ['published'], ['1']);

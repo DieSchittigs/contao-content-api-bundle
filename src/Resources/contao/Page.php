@@ -8,11 +8,14 @@ use DieSchittigs\ContaoContentApiBundle\Exceptions\ContentApiNotFoundException;
 
 /**
  * Page augments PageModel for the API.
- *
- * @param int $id id of the PageModel
  */
 class Page extends AugmentedContaoModel
 {
+    /**
+     * constructor.
+     *
+     * @param int $id id of the PageModel
+     */
     public function __construct($id)
     {
         $this->model = PageModel::findById($id);

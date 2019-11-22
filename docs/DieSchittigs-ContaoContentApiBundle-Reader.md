@@ -35,9 +35,9 @@ Methods
 
 ### __construct
 
-    mixed DieSchittigs\ContaoContentApiBundle\Reader::__construct($model, $url)
+    mixed DieSchittigs\ContaoContentApiBundle\Reader::__construct(string $model, string $url)
 
-
+constructor.
 
 
 
@@ -45,8 +45,8 @@ Methods
 
 
 #### Arguments
-* $model **mixed**
-* $url **mixed**
+* $model **string** - &lt;p&gt;Reader Model class (e.g. NewsModel)&lt;/p&gt;
+* $url **string** - &lt;p&gt;Current URL&lt;/p&gt;
 
 
 

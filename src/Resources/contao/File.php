@@ -7,9 +7,6 @@ use Contao\Controller;
 
 /**
  * File augments FilesModel for the API.
- *
- * @param string $uuid uuid of the FilesModel
- * @param mixed  $size Object or serialized string representing the (image) size
  */
 class File extends AugmentedContaoModel
 {
@@ -24,6 +21,12 @@ class File extends AugmentedContaoModel
         'filesModel',
     ];
 
+    /**
+     * constructor.
+     *
+     * @param string $uuid uuid of the FilesModel
+     * @param mixed  $size Object or serialized string representing the (image) size
+     */
     public function __construct($uuid, $size = null)
     {
         $this->model = FilesModel::findByUuid($uuid);

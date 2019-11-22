@@ -35,9 +35,9 @@ Methods
 
 ### __construct
 
-    mixed DieSchittigs\ContaoContentApiBundle\Article::__construct($id)
+    mixed DieSchittigs\ContaoContentApiBundle\Article::__construct(integer $id)
 
-
+constructor.
 
 
 
@@ -45,7 +45,7 @@ Methods
 
 
 #### Arguments
-* $id **mixed**
+* $id **integer** - &lt;p&gt;id of the ArticleModel&lt;/p&gt;
 
 
 

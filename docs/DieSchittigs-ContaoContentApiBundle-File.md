@@ -47,9 +47,9 @@ Methods
 
 ### __construct
 
-    mixed DieSchittigs\ContaoContentApiBundle\File::__construct($uuid, $size)
+    mixed DieSchittigs\ContaoContentApiBundle\File::__construct(string $uuid, mixed $size)
 
-
+constructor.
 
 
 
@@ -57,8 +57,8 @@ Methods
 
 
 #### Arguments
-* $uuid **mixed**
-* $size **mixed**
+* $uuid **string** - &lt;p&gt;uuid of the FilesModel&lt;/p&gt;
+* $size **mixed** - &lt;p&gt;Object or serialized string representing the (image) size&lt;/p&gt;
 
 
 

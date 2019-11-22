@@ -7,11 +7,14 @@ use Contao\Module;
 
 /**
  * ApiModule augments ModuleModel for the API.
- *
- * @param int $id id of the ModuleModel
  */
 class ApiModule extends AugmentedContaoModel
 {
+    /**
+     * constructor.
+     *
+     * @param int $id id of the ModuleModel
+     */
     public function __construct($id)
     {
         $this->model = ModuleModel::findByPk($id);

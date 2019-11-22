@@ -45,9 +45,9 @@ Methods
 
 ### __construct
 
-    mixed DieSchittigs\ContaoContentApiBundle\Sitemap::__construct(\DieSchittigs\ContaoContentApiBundle\string $language, $pid)
+    mixed DieSchittigs\ContaoContentApiBundle\Sitemap::__construct(string $language, integer $pid)
 
-
+constructor.
 
 
 
@@ -55,8 +55,8 @@ Methods
 
 
 #### Arguments
-* $language **DieSchittigs\ContaoContentApiBundle\string**
-* $pid **mixed**
+* $language **string** - &lt;p&gt;If set, ignores other languages&lt;/p&gt;
+* $pid **integer** - &lt;p&gt;Parent ID (for recursive calls)&lt;/p&gt;
 
 
 

@@ -8,11 +8,14 @@ use Contao\ModuleArticle;
 
 /**
  * ApiContentElement augments ArticleModel for the API.
- *
- * @param int $id id of the ArticleModel
  */
 class Article extends AugmentedContaoModel
 {
+    /**
+     * constructor.
+     *
+     * @param int $id id of the ArticleModel
+     */
     public function __construct($id)
     {
         $this->model = ArticleModel::findById($id, ['published'], ['1']);

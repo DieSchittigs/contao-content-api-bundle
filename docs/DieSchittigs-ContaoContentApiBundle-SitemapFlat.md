@@ -35,9 +35,9 @@ Methods
 
 ### __construct
 
-    mixed DieSchittigs\ContaoContentApiBundle\SitemapFlat::__construct(\DieSchittigs\ContaoContentApiBundle\string $language)
+    mixed DieSchittigs\ContaoContentApiBundle\SitemapFlat::__construct(string $language)
 
-
+constructor.
 
 
 
@@ -45,7 +45,7 @@ Methods
 
 
 #### Arguments
-* $language **DieSchittigs\ContaoContentApiBundle\string**
+* $language **string** - &lt;p&gt;If set, ignores other languages&lt;/p&gt;
 
 
 

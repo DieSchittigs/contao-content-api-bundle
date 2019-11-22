@@ -6,13 +6,16 @@ namespace DieSchittigs\ContaoContentApiBundle;
  * SitemapFlat represents the actual site structure as a key value object.
  * Key: URL of the page
  * Value: PageModel.
- *
- * @param string $language If set, ignores other languages
  */
 class SitemapFlat implements ContaoJsonSerializable
 {
     public $sitemap;
 
+    /**
+     * constructor.
+     *
+     * @param string $language If set, ignores other languages
+     */
     public function __construct(string $language = null)
     {
         $sitemap = new Sitemap($language);

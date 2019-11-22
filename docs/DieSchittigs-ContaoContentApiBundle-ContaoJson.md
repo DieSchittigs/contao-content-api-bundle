@@ -1,7 +1,7 @@
 DieSchittigs\ContaoContentApiBundle\ContaoJson
 ===============
 
-ContaoJson tries to pack &quot;everyting Contao&quot; into a JSON-serializable package.
+ContaoJson tries to pack &quot;everything Contao&quot; into a JSON-serializable package.
 
 It works with:
  - Contao Collections
@@ -56,9 +56,9 @@ Methods
 
 ### __construct
 
-    mixed DieSchittigs\ContaoContentApiBundle\ContaoJson::__construct($data, array $allowedFields)
+    mixed DieSchittigs\ContaoContentApiBundle\ContaoJson::__construct(mixed $data, array $allowedFields)
 
-
+constructor.
 
 
 
@@ -66,8 +66,8 @@ Methods
 
 
 #### Arguments
-* $data **mixed**
-* $allowedFields **array**
+* $data **mixed** - &lt;p&gt;any data you want resolved and serialized&lt;/p&gt;
+* $allowedFields **array** - &lt;p&gt;an array of whitelisted keys (non-matching values will be purged)&lt;/p&gt;
 
 
 

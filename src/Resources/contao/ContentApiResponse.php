@@ -6,13 +6,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * ContentApiResponse represents all responses from the API.
- *
- * @param mixed $data    any data (object, array, or ContaoJson)
- * @param int   $status  Status code
- * @param array $headers Additional headers
  */
 class ContentApiResponse extends JsonResponse
 {
+    /**
+     * constructor.
+     *
+     * @param mixed $data    any data (object, array, or ContaoJson)
+     * @param int   $status  Status code
+     * @param array $headers Additional headers
+     */
     public function __construct($data, int $status = 200, array $headers = [])
     {
         if (isset($GLOBALS['TL_HOOKS']['apiResponse']) && is_array($GLOBALS['TL_HOOKS']['apiResponse'])) {

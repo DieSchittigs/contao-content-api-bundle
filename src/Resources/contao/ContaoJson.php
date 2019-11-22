@@ -8,7 +8,7 @@ use Contao\Controller;
 use Contao\StringUtil;
 
 /**
- * ContaoJson tries to pack "everyting Contao" into a JSON-serializable package.
+ * ContaoJson tries to pack "everything Contao" into a JSON-serializable package.
  *
  * It works with:
  *  - Contao Collections
@@ -22,15 +22,18 @@ use Contao\StringUtil;
  *  - HTML will be unescaped automatically
  *  - Contao Insert-Tags are resolved automatically
  * ContaoJson will recursively call itself until all fields are resolved.
- *
- * @param mixed $data          any data you want resolved and serialized
- * @param array $allowedFields an array of whitelisted keys (non-matching values will be purged)
  */
 class ContaoJson implements \JsonSerializable
 {
     public $data = null;
     private $allowedFields;
 
+    /**
+     * constructor.
+     *
+     * @param mixed $data          any data you want resolved and serialized
+     * @param array $allowedFields an array of whitelisted keys (non-matching values will be purged)
+     */
     public function __construct($data, array $allowedFields = null)
     {
         $this->allowedFields = $allowedFields;

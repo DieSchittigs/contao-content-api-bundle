@@ -35,9 +35,9 @@ Methods
 
 ### __construct
 
-    mixed DieSchittigs\ContaoContentApiBundle\ApiContentElement::__construct($id, $inColumn)
+    mixed DieSchittigs\ContaoContentApiBundle\ApiContentElement::__construct(integer $id, string $inColumn)
 
-
+constructor.
 
 
 
@@ -45,8 +45,8 @@ Methods
 
 
 #### Arguments
-* $id **mixed**
-* $inColumn **mixed**
+* $id **integer** - &lt;p&gt;id of the ContentModel&lt;/p&gt;
+* $inColumn **string** - &lt;p&gt;In which column does the Content Element reside in&lt;/p&gt;
 
 
 

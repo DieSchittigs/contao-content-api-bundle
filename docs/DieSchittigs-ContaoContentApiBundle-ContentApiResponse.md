@@ -22,9 +22,9 @@ Methods
 
 ### __construct
 
-    mixed DieSchittigs\ContaoContentApiBundle\ContentApiResponse::__construct($data, \DieSchittigs\ContaoContentApiBundle\int $status, array $headers)
+    mixed DieSchittigs\ContaoContentApiBundle\ContentApiResponse::__construct(mixed $data, integer $status, array $headers)
 
-
+constructor.
 
 
 
@@ -32,8 +32,8 @@ Methods
 
 
 #### Arguments
-* $data **mixed**
-* $status **DieSchittigs\ContaoContentApiBundle\int**
-* $headers **array**
+* $data **mixed** - &lt;p&gt;any data (object, array, or ContaoJson)&lt;/p&gt;
+* $status **integer** - &lt;p&gt;Status code&lt;/p&gt;
+* $headers **array** - &lt;p&gt;Additional headers&lt;/p&gt;
 
 

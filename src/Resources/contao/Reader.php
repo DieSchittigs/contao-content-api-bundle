@@ -7,12 +7,15 @@ use Contao\Config;
 
 /**
  * Reader augments reader model classes for the API.
- *
- * @param string $model Reader Model class (e.g. NewsModel)
- * @param string $url   Current URL
  */
 class Reader extends AugmentedContaoModel
 {
+    /**
+     * constructor.
+     *
+     * @param string $model Reader Model class (e.g. NewsModel)
+     * @param string $url   Current URL
+     */
     public function __construct($model, $url)
     {
         $alias = $this->urlToAlias($url);
