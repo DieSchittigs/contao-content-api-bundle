@@ -17,7 +17,7 @@ class ContentApiResponse extends JsonResponse
     {
         if (isset($GLOBALS['TL_HOOKS']['apiResponse']) && is_array($GLOBALS['TL_HOOKS']['apiResponse'])) {
             foreach ($GLOBALS['TL_HOOKS']['apiResponse'] as $callback) {
-                $data = $callback[0]::$callback[1]($data);
+                $data = $callback[0]::{$callback[1]}($data);
             }
         }
         if (is_string($data)) {

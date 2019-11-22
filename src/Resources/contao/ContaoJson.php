@@ -37,7 +37,7 @@ class ContaoJson implements \JsonSerializable
         $doHandle = true;
         if (isset($GLOBALS['TL_HOOKS']['apiContaoJson']) && is_array($GLOBALS['TL_HOOKS']['apiContaoJson'])) {
             foreach ($GLOBALS['TL_HOOKS']['apiContaoJson'] as $callback) {
-                $doHandle = $callback[0]::$callback[1]($this, $data);
+                $doHandle = $callback[0]::{$callback[1]}($this, $data);
             }
         }
         if (!$doHandle) {

@@ -1,7 +1,8 @@
 parameters:
-  content_api_enabled:
-    true
+  content_api_enabled: true
   content_api_readers:
     newsreader: NewsModel
+  content_api_modules:
+    ModuleNewsList: ModuleNewsList
   content_api_headers:
-    'Access-Control-Allow-Origin': '*'
+    "Access-Control-Allow-Origin": "*"

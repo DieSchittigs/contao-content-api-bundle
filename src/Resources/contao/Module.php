@@ -22,5 +22,10 @@ class ApiModule extends AugmentedContaoModel
         } catch (\Exception $e) {
             $this->compiledHTML = null;
         }
+        if (isset($GLOBALS['TL_HOOKS']['apiModuleGenerated']) && is_array($GLOBALS['TL_HOOKS']['apiModuleGenerated'])) {
+            foreach ($GLOBALS['TL_HOOKS']['apiModuleGenerated'] as $callback) {
+                $callback[0]::{$callback[1]}($this, $moduleClass);
+            }
+        }
     }
 }

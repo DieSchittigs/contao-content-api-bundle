@@ -46,7 +46,7 @@ class ContentApiController extends Controller
         $this->headers = $this->getParameter('content_api_headers');
         if (isset($GLOBALS['TL_HOOKS']['apiBeforeInit']) && is_array($GLOBALS['TL_HOOKS']['apiBeforeInit'])) {
             foreach ($GLOBALS['TL_HOOKS']['apiBeforeInit'] as $callback) {
-                $request = $callback[0]::$callback[1]($request);
+                $request = $callback[0]::{$callback[1]}($request);
             }
         }
         // Override $_SERVER['REQUEST_URI']

@@ -149,7 +149,7 @@ It also tries to add all `ContentModels` it can find.
 We provide some basic hooks:
 
 ```
-class Hook{
+class Hooks{
 
     // $GLOBALS['TL_HOOKS']['apiBeforeInit']
     public static apiBeforeInit(Request $request){
@@ -178,6 +178,19 @@ class Hook{
         $data->tamperedWith = true;
         return $data;
 
+    }
+
+    // $GLOBALS['TL_HOOKS']['apiModuleGenerated']
+    public static function apiModuleGenerated(ApiModule $module, string $moduleClass)
+    {
+        // Override the way certain modules are handled
+        if ($moduleClass != 'Contao\ModuleBlogList') {
+            return;
+        }
+        $_module = new ModuleBlogList($module->model, null);
+        $module->items = $_module->fetchItems(
+            $module->category
+        );
     }
 }
 ```
