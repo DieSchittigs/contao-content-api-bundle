@@ -102,7 +102,7 @@ class ContaoJson implements \JsonSerializable
                 unset($object->{$key});
                 continue;
             }
-            if (strpos($key, 'SRC') !== false && $value) {
+            if ((strpos($key, 'SRC') !== false || $key == 'pageImage') && $value) {
                 $src = $this->unserialize($value);
                 if (is_array($src)) {
                     $files = [];
@@ -128,6 +128,9 @@ class ContaoJson implements \JsonSerializable
 
     private function handleString(string $string)
     {
+        if (!ctype_print($string)) {
+            return '';
+        }
         $unserialized = $this->unserialize($string);
         if (!is_string($unserialized)) {
             return new ContaoJson($unserialized);
