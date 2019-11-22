@@ -128,9 +128,8 @@ class ContaoJson implements \JsonSerializable
 
     private function handleString(string $string)
     {
-        if (!ctype_print($string)) {
-            return '';
-        }
+        // Fix binary or otherwise "broken" strings
+        $string = mb_convert_encoding($string, 'UTF-8', 'UTF-8');
         $unserialized = $this->unserialize($string);
         if (!is_string($unserialized)) {
             return new ContaoJson($unserialized);
