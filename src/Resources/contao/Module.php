@@ -20,7 +20,19 @@ class ApiModule extends AugmentedContaoModel
         $this->model = ModuleModel::findByPk($id);
         $moduleClass = Module::findClass($this->type);
         try {
-            $module = new $moduleClass($this->model, null);
+            $strColumn = null;
+            // Add compatibility to new front end module fragments
+            if(defined('VERSION'))
+            {
+                if (version_compare(VERSION, '4.5', '>='))
+                {
+                    if ($moduleClass === ModuleProxy::class)
+                    {
+                        $strColumn = 'main';
+                    }
+                }
+            }
+            $module = new $moduleClass($this->model, $strColumn);            
             $this->compiledHTML = @$module->generate() ?? null;
         } catch (\Exception $e) {
             $this->compiledHTML = null;
