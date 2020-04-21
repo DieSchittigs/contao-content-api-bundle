@@ -116,6 +116,14 @@ class ContaoJson implements \JsonSerializable
                 } else {
                     $data->{$key} = (new File($src, $object->size ?? null))->toJson();
                 }
+            } else if ($key == 'author' && is_numeric($value)) {
+                $userModel = UserModel::findById($value);
+                $author = (object) [
+                    'id' => $userModel->id,
+                    'name' => $userModel->name,
+                    'singleSRC' => $userModel->singleSRC
+                ];
+                $data->{$key} = new ContaoJson($author);
             } else {
                 $data->{$key} = new self($value);
             }
