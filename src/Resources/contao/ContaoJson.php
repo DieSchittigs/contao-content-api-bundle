@@ -6,6 +6,7 @@ use Contao\Model\Collection;
 use Contao\Model;
 use Contao\Controller;
 use Contao\StringUtil;
+use Contao\UserModel;
 
 /**
  * ContaoJson tries to pack "everything Contao" into a JSON-serializable package.
