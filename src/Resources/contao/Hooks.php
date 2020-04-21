@@ -9,7 +9,7 @@ class Hooks
 {
     public static function apiModuleGenerated(ApiModule $module, string $moduleClass)
     {
-        if ($moduleClass != 'Contao\ModuleNewsList') {
+        if ($moduleClass != 'Contao\ModuleNewsList' && $moduleClass != 'ModuleNewsList') {
             return;
         }
         $_module = new ModuleNewsList($module->model, null);
