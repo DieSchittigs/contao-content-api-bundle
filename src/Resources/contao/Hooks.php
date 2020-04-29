@@ -3,6 +3,7 @@
 namespace DieSchittigs\ContaoContentApiBundle;
 
 use DieSchittigs\ContaoContentApiBundle\News\ModuleNewsList;
+use Contao\ContentModel;
 use Contao\StringUtil;
 
 class Hooks
@@ -19,15 +20,15 @@ class Hooks
             $module->numberOfItems,
             0
         );
-        if ($_module->imgSize) {
-            foreach ($module->newsItems as $item) {
-                if (!trim(
-                    implode(
-                        '',
-                        StringUtil::deserialize($item->size)
-                    )
-                )) $item->size = $_module->imgSize;
-            }
+        foreach ($module->newsItems as $item) {
+            if ($_module->imgSize && !trim(
+                implode(
+                    '',
+                    StringUtil::deserialize($item->size)
+                )
+            )) $item->size = $_module->imgSize;
+            $content = ContentModel::findPublishedByPidAndTable($item->id, 'tl_news');
+            $item->showMore = (bool) $content;
         }
     }
 }
