@@ -13,6 +13,7 @@ use Contao\Controller;
  */
 class ApiContentElement extends AugmentedContaoModel
 {
+    public $content = [];
     /**
      * constructor.
      *
@@ -26,7 +27,7 @@ class ApiContentElement extends AugmentedContaoModel
             return $this->model = null;
         }
         $this->compiledHtml = null;
-        $ceClass = 'Contao\Content'.ucfirst($this->model->type);
+        $ceClass = 'Contao\Content' . ucfirst($this->model->type);
         if (class_exists($ceClass)) {
             try {
                 $compiled = new $ceClass($this->model, $inColumn);
@@ -80,5 +81,15 @@ class ApiContentElement extends AugmentedContaoModel
     public function hasReader($readerType): bool
     {
         return $this->subModule && $this->subModule->type == $readerType;
+    }
+
+    public function toJson(): ContaoJson
+    {
+        if (!$this->model) {
+            return new ContaoJson(null);
+        }
+        $this->model->content = $this->content;
+
+        return new ContaoJson($this->model);
     }
 }

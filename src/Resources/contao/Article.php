@@ -11,6 +11,7 @@ use Contao\ModuleArticle;
  */
 class Article extends AugmentedContaoModel
 {
+    public $content = [];
     /**
      * constructor.
      *
@@ -22,7 +23,19 @@ class Article extends AugmentedContaoModel
         if (!$this->model || !Controller::isVisibleElement($this->model)) {
             return $this->model = null;
         }
-        $this->content = ApiContentElement::findByPidAndTable($id, 'tl_article', $this->inColumn);
+        $stack = [$this];
+        $contentElements = ApiContentElement::findByPidAndTable($id, 'tl_article', $this->inColumn);
+        foreach ($contentElements as $ce) {
+            if (in_array($ce->type, $GLOBALS['TL_WRAPPERS']['stop'])) {
+                if (count($stack) > 1) array_pop($stack);
+                continue;
+            }
+            //print_r(get_class($stack[count($stack) - 1]));
+            $stack[count($stack) - 1]->content[] = $ce;
+            if (in_array($ce->type, $GLOBALS['TL_WRAPPERS']['start'])) {
+                $stack[] = $ce;
+            }
+        }
         $module = new ModuleArticle($this->model);
         $this->compiledHTML = $module->generate();
     }
@@ -59,5 +72,15 @@ class Article extends AugmentedContaoModel
         }
 
         return false;
+    }
+
+    public function toJson(): ContaoJson
+    {
+        if (!$this->model) {
+            return new ContaoJson(null);
+        }
+        $this->model->content = $this->content;
+
+        return new ContaoJson($this->model);
     }
 }

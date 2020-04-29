@@ -180,7 +180,9 @@ class ContentApiController extends Controller
         $request = $this->init($request);
 
         return new ContentApiResponse(
-            File::get($request->query->get('path', 'files'), $request->query->get('depth', 0)), 200, $this->headers
+            File::get($request->query->get('path', 'files'), $request->query->get('depth', 0)),
+            200,
+            $this->headers
         );
     }
 
@@ -226,7 +228,7 @@ class ContentApiController extends Controller
         $request = $this->init($request);
         $readers = $this->getParameter('content_api_readers');
         if (!$readers[$reader]) {
-            return new ContentApiResponse('Reader "'.$reader.'" not available'.$url, 404);
+            return new ContentApiResponse('Reader "' . $reader . '" not available' . $url, 404);
         }
         $url = $request->query->get('url', '/');
         $page = Page::findByUrl($url, false);
@@ -235,7 +237,7 @@ class ContentApiController extends Controller
             $readerArticle = (new Reader($readers[$reader], $url))->toJson();
         }
         if (!$readerArticle) {
-            return new ContentApiResponse('No reader found at URL '.$url, 404);
+            return new ContentApiResponse('No reader found at URL ' . $url, 404);
         }
 
         return new ContentApiResponse($readerArticle, 200, $this->headers);
@@ -274,7 +276,7 @@ class ContentApiController extends Controller
             }
         }
         if (!$readerFound && !$exactMatch) {
-            return new ContentApiResponse('No page and reader found at URL '.$url, 404);
+            return new ContentApiResponse('No page and reader found at URL ' . $url, 404);
         }
 
         return new ContentApiResponse($response, 200, $this->headers);
