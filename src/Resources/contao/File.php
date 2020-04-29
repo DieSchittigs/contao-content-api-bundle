@@ -20,6 +20,7 @@ class File extends AugmentedContaoModel
         'size',
         'filesModel',
     ];
+    public $mime;
 
     /**
      * constructor.
@@ -43,7 +44,7 @@ class File extends AugmentedContaoModel
             }
         }
         $fileObj['singleSRC'] = $this->path;
-        $this->mime = \mime_content_type(TL_ROOT.'/'.$this->path) ?? null;
+        $this->mime = \mime_content_type(TL_ROOT . '/' . $this->path) ?? null;
         if ($this->type == 'file' && strpos($this->mime, 'image') !== false) {
             $fileObj['size'] = $size;
             $image = new \stdClass();

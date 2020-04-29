@@ -123,23 +123,6 @@ class ContentApiController extends Controller
     /**
      * @return Response
      *
-     * @Route("/page", name="content_api_page")
-     *
-     * @param Request $request Current request
-     */
-    public function pageAction(Request $request)
-    {
-        $request = $this->init($request);
-        try {
-            return new ContentApiResponse(Page::findByUrl($request->query->get('url', null)), 200, $this->headers);
-        } catch (ContentApiNotFoundException $e) {
-            return new ContentApiResponse($e, 404);
-        }
-    }
-
-    /**
-     * @return Response
-     *
      * @Route("/user", name="content_api_user")
      *
      * @param Request $request Current request
@@ -197,7 +180,7 @@ class ContentApiController extends Controller
     {
         $request = $this->init($request);
 
-        return new ContentApiResponse(new ApiModule($request->query->get('id', 0)), 200, $this->headers);
+        return new ContentApiResponse(new ApiModule($request->query->get('id', 0), $request->query->get('url')), 200, $this->headers);
     }
 
     /**
@@ -218,34 +201,6 @@ class ContentApiController extends Controller
     /**
      * @return Response
      *
-     * @Route("/{reader}", name="content_api_reader")
-     *
-     * @param string  $reader  Reader (e.g. newsreader)
-     * @param Request $request Current request
-     */
-    public function readerAction(string $reader, Request $request)
-    {
-        $request = $this->init($request);
-        $readers = $this->getParameter('content_api_readers');
-        if (!$readers[$reader]) {
-            return new ContentApiResponse('Reader "' . $reader . '" not available' . $url, 404);
-        }
-        $url = $request->query->get('url', '/');
-        $page = Page::findByUrl($url, false);
-        $readerArticle = null;
-        if ($page->hasReader($reader)) {
-            $readerArticle = (new Reader($readers[$reader], $url))->toJson();
-        }
-        if (!$readerArticle) {
-            return new ContentApiResponse('No reader found at URL ' . $url, 404);
-        }
-
-        return new ContentApiResponse($readerArticle, 200, $this->headers);
-    }
-
-    /**
-     * @return Response
-     *
      * @Route("/", name="content_api_auto")
      *
      * @param Request $request Current request
@@ -253,12 +208,10 @@ class ContentApiController extends Controller
     public function indexAction(Request $request)
     {
         $request = $this->init($request);
-        $readers = $this->getParameter('content_api_readers');
         $url = $request->query->get('url', '/');
-        $exactMatch = false;
+
         try {
             $page = Page::findByUrl($url);
-            $exactMatch = true;
         } catch (ContentApiNotFoundException $e) {
             try {
                 $page = Page::findByUrl($url, false);
@@ -266,19 +219,11 @@ class ContentApiController extends Controller
                 return new ContentApiResponse($e, 404);
             }
         }
-        $response = [
-            'page' => $page ? $page->toJson() : null,
-        ];
-        foreach ($readers as $type => $model) {
-            if ($page->hasReader($type)) {
-                $readerFound = true;
-                $response[$type] = (new Reader($model, $url))->toJson();
-            }
-        }
-        if (!$readerFound && !$exactMatch) {
-            return new ContentApiResponse('No page and reader found at URL ' . $url, 404);
+
+        if (!$page) {
+            return new ContentApiResponse('No page found at URL ' . $url, 404);
         }
 
-        return new ContentApiResponse($response, 200, $this->headers);
+        return new ContentApiResponse($page->toJson(), 200, $this->headers);
     }
 }

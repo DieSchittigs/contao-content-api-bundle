@@ -14,8 +14,13 @@ abstract class AugmentedContaoModel implements ContaoJsonSerializable
         if (!$this->model) {
             return new ContaoJson(null);
         }
+        $reflect = new \ReflectionObject($this);
+        foreach ($reflect->getProperties(\ReflectionProperty::IS_PUBLIC) as $prop) {
+            if ($prop->class == 'DieSchittigs\ContaoContentApiBundle\AugmentedContaoModel') continue;
+            $this->model->{$prop->name} = $this->{$prop->name};
+        }
 
-        return new ContaoJson($this->model);
+        return new ContaoJson($this->model);;
     }
 
     /**
@@ -26,21 +31,5 @@ abstract class AugmentedContaoModel implements ContaoJsonSerializable
     public function __get($property)
     {
         return $this->model->{$property} ?? null;
-    }
-
-    /**
-     * Set the value in the attached model.
-     *
-     * @param string $property key
-     * @param mixed  $value    value
-     */
-    public function __set($property, $value)
-    {
-        if (property_exists($this, $property)) {
-            return $this;
-        }
-        $this->model->{$property} = $value;
-
-        return $this;
     }
 }

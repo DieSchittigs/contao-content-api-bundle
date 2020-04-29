@@ -14,13 +14,16 @@ use Contao\Controller;
 class ApiContentElement extends AugmentedContaoModel
 {
     public $content = [];
+    public $compiledHTML;
+    public $module;
+    public $form;
     /**
      * constructor.
      *
      * @param int    $id       id of the ContentModel
      * @param string $inColumn In which column does the Content Element reside in
      */
-    public function __construct($id, $inColumn = 'main')
+    public function __construct($id, $inColumn = 'main', $url = null)
     {
         $this->model = ContentModel::findById($id, ['published'], ['1']);
         if (!$this->model || !Controller::isVisibleElement($this->model)) {
@@ -38,14 +41,14 @@ class ApiContentElement extends AugmentedContaoModel
         if ($this->type === 'module') {
             $contentModuleClass = ContentElement::findClass($this->type);
             $element = new $contentModuleClass($this->model, $inColumn);
-            $this->subModule = new ApiModule($element->module);
+            $this->module = new ApiModule($element->module, $url);
         }
         if ($this->type === 'form') {
             $formModel = FormModel::findById($this->form);
             if ($formModel) {
                 $formModel->fields = FormFieldModel::findPublishedByPid($formModel->id);
             }
-            $this->subForm = $formModel;
+            $this->form = $formModel;
         }
     }
 
@@ -56,7 +59,7 @@ class ApiContentElement extends AugmentedContaoModel
      * @param string $table    Parent table
      * @param string $inColumn In which column doe the Content Elements reside in
      */
-    public static function findByPidAndTable($pid, $table = 'tl_article', $inColumn = 'main')
+    public static function findByPidAndTable($pid, $table = 'tl_article', $inColumn = 'main', $url = null)
     {
         $contents = [];
         $contentModels = ContentModel::findPublishedByPidAndTable($pid, $table, ['order' => 'sorting ASC']);
@@ -67,29 +70,9 @@ class ApiContentElement extends AugmentedContaoModel
             if (!Controller::isVisibleElement($content)) {
                 continue;
             }
-            $contents[] = new self($content->id, $inColumn);
+            $contents[] = new self($content->id, $inColumn, $url);
         }
 
         return $contents;
-    }
-
-    /**
-     * Does this Content Element have a reader module?
-     *
-     * @param string $readerType What kind of reader? e.g. 'newsreader'
-     */
-    public function hasReader($readerType): bool
-    {
-        return $this->subModule && $this->subModule->type == $readerType;
-    }
-
-    public function toJson(): ContaoJson
-    {
-        if (!$this->model) {
-            return new ContaoJson(null);
-        }
-        $this->model->content = $this->content;
-
-        return new ContaoJson($this->model);
     }
 }

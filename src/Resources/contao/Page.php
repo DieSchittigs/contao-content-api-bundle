@@ -11,12 +11,15 @@ use DieSchittigs\ContaoContentApiBundle\Exceptions\ContentApiNotFoundException;
  */
 class Page extends AugmentedContaoModel
 {
+    public $url;
+    public $urlAbsolute;
+    public $articles;
     /**
      * constructor.
      *
      * @param int $id id of the PageModel
      */
-    public function __construct($id)
+    public function __construct($id, $url = null)
     {
         $this->model = PageModel::findById($id);
         if (!$this->model || !Controller::isVisibleElement($this->model)) {
@@ -26,7 +29,7 @@ class Page extends AugmentedContaoModel
         $this->url = $this->model->getFrontendUrl();
         $this->urlAbsolute = $this->model->getAbsoluteUrl();
         Controller::setStaticUrls($this->model);
-        $this->articles = Article::findByPageId($this->id);
+        $this->articles = Article::findByPageId($this->id, $url);
     }
 
     public static function findByUrl($url, $exactMatch = true)
@@ -34,29 +37,11 @@ class Page extends AugmentedContaoModel
         $sitemapFlat = new SitemapFlat();
         $_page = $sitemapFlat->findUrl($url, $exactMatch);
         if (!$_page) {
-            throw new ContentApiNotFoundException('Page not found at URL '.$url);
+            throw new ContentApiNotFoundException('Page not found at URL ' . $url);
         }
-        $page = new self($_page['id']);
+        $page = new self($_page['id'], $url);
         $page->exactUrlMatch = $_page->exactUrlMatch;
 
         return $page;
-    }
-
-    /**
-     * Does this Page have a reader module?
-     *
-     * @param string $readerType What kind of reader? e.g. 'newsreader'
-     */
-    public function hasReader($readerType): bool
-    {
-        foreach ($this->articles as $articles) {
-            foreach ($articles as $article) {
-                if ($article->hasReader($readerType)) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 }
