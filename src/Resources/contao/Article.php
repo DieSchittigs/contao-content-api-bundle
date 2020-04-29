@@ -30,7 +30,6 @@ class Article extends AugmentedContaoModel
                 if (count($stack) > 1) array_pop($stack);
                 continue;
             }
-            //print_r(get_class($stack[count($stack) - 1]));
             $stack[count($stack) - 1]->content[] = $ce;
             if (in_array($ce->type, $GLOBALS['TL_WRAPPERS']['start'])) {
                 $stack[] = $ce;
@@ -59,19 +58,28 @@ class Article extends AugmentedContaoModel
     }
 
     /**
+     * Recursive search for reader modules
+     *
+     * @param string $readerType What kind of reader? e.g. 'newsreader'
+     * @param array $content Array of Content Elements
+     */
+    private function _hasReader($readerType, $content)
+    {
+        foreach ($content as $contentElement) {
+            if ($contentElement->hasReader($readerType)) return true;
+            if ($this->_hasReader($readerType, $contentElement->content)) return true;
+        }
+        return false;
+    }
+
+    /**
      * Does this Article have a reader module?
      *
      * @param string $readerType What kind of reader? e.g. 'newsreader'
      */
     public function hasReader($readerType): bool
     {
-        foreach ($this->content as $contentElement) {
-            if ($contentElement->hasReader($readerType)) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->_hasReader($readerType, $this->content);
     }
 
     public function toJson(): ContaoJson
