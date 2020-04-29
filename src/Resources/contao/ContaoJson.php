@@ -6,7 +6,6 @@ use Contao\Model\Collection;
 use Contao\Model;
 use Contao\Controller;
 use Contao\StringUtil;
-use Contao\UserModel;
 
 /**
  * ContaoJson tries to pack "everything Contao" into a JSON-serializable package.
@@ -118,13 +117,7 @@ class ContaoJson implements \JsonSerializable
                     $data->{$key} = (new File($src, $object->size ?? null))->toJson();
                 }
             } else if ($key == 'author' && is_numeric($value)) {
-                $userModel = UserModel::findById($value);
-                $author = (object) [
-                    'id' => $userModel->id,
-                    'name' => $userModel->name,
-                    'singleSRC' => $userModel->singleSRC
-                ];
-                $data->{$key} = new ContaoJson($author);
+                $data->{$key} = (new Author($value))->toJson();
             } else {
                 $data->{$key} = new self($value);
             }
