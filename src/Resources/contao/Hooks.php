@@ -21,7 +21,7 @@ class Hooks
         );
         if ($_module->imgSize) {
             foreach ($module->newsItems as $item) {
-                if (trim(
+                if (!trim(
                     implode(
                         '',
                         StringUtil::deserialize($item->size)
