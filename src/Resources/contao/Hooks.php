@@ -19,5 +19,15 @@ class Hooks
             $module->numberOfItems,
             0
         );
+        if ($_module->imgSize) {
+            foreach ($module->newsItems as $item) {
+                if (trim(
+                    implode(
+                        '',
+                        StringUtil::deserialize($item->size)
+                    )
+                )) $item->size = $_module->imgSize;
+            }
+        }
     }
 }
