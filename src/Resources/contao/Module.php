@@ -12,7 +12,6 @@ use Contao\StringUtil;
  */
 class ApiModule extends AugmentedContaoModel
 {
-    public $compiledHTML;
     public $article;
     /**
      * constructor.
@@ -24,20 +23,22 @@ class ApiModule extends AugmentedContaoModel
         $readers = System::getContainer()->getParameter('content_api_readers');
         $this->model = ModuleModel::findByPk($id);
         $moduleClass = Module::findClass($this->type);
-        try {
-            $strColumn = null;
-            // Add compatibility to new front end module fragments
-            if (defined('VERSION')) {
-                if (version_compare(VERSION, '4.5', '>=')) {
-                    if ($moduleClass === ModuleProxy::class) {
-                        $strColumn = 'main';
+        if (System::getContainer()->getParameter('content_api_compile_html')) {
+            try {
+                $strColumn = null;
+                // Add compatibility to new front end module fragments
+                if (defined('VERSION')) {
+                    if (version_compare(VERSION, '4.5', '>=')) {
+                        if ($moduleClass === \Contao\ModuleProxy::class) {
+                            $strColumn = 'main';
+                        }
                     }
                 }
+                $module = new $moduleClass($this->model, $strColumn);
+                $this->compiledHTML = @$module->generate() ?? null;
+            } catch (\Exception $e) {
+                $this->compiledHTML = null;
             }
-            $module = new $moduleClass($this->model, $strColumn);
-            $this->compiledHTML = @$module->generate() ?? null;
-        } catch (\Exception $e) {
-            $this->compiledHTML = null;
         }
         if ($url !== null) {
             foreach ($readers as $type => $model) {

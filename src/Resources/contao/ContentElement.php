@@ -7,6 +7,7 @@ use Contao\FormModel;
 use Contao\FormFieldModel;
 use Contao\ContentElement;
 use Contao\Controller;
+use Contao\System;
 
 /**
  * ApiContentElement augments ContentModel for the API.
@@ -14,7 +15,6 @@ use Contao\Controller;
 class ApiContentElement extends AugmentedContaoModel
 {
     public $content = [];
-    public $compiledHTML;
     public $module;
     public $form;
     /**
@@ -29,13 +29,14 @@ class ApiContentElement extends AugmentedContaoModel
         if (!$this->model || !Controller::isVisibleElement($this->model)) {
             return $this->model = null;
         }
-        $this->compiledHtml = null;
-        $ceClass = 'Contao\Content' . ucfirst($this->model->type);
-        if (class_exists($ceClass)) {
-            try {
-                $compiled = new $ceClass($this->model, $inColumn);
-                $this->compiledHtml = $compiled->generate();
-            } catch (\Exception $e) {
+        if (System::getContainer()->getParameter('content_api_compile_html')) {
+            $ceClass = 'Contao\Content' . ucfirst($this->model->type);
+            if (class_exists($ceClass)) {
+                try {
+                    $compiled = new $ceClass($this->model, $inColumn);
+                    $this->compiledHtml = $compiled->generate();
+                } catch (\Exception $e) {
+                }
             }
         }
         if ($this->type === 'module') {

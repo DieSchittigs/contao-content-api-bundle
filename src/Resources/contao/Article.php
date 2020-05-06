@@ -5,6 +5,7 @@ namespace DieSchittigs\ContaoContentApiBundle;
 use Contao\ArticleModel;
 use Contao\Controller;
 use Contao\ModuleArticle;
+use Contao\System;
 
 /**
  * ApiContentElement augments ArticleModel for the API.
@@ -12,7 +13,6 @@ use Contao\ModuleArticle;
 class Article extends AugmentedContaoModel
 {
     public $content = [];
-    public $compiledHTML;
     /**
      * constructor.
      *
@@ -36,8 +36,10 @@ class Article extends AugmentedContaoModel
                 $stack[] = $ce;
             }
         }
-        $module = new ModuleArticle($this->model);
-        $this->compiledHTML = $module->generate();
+        if (System::getContainer()->getParameter('content_api_compile_html')) {
+            $module = new ModuleArticle($this->model);
+            $this->compiledHTML = $module->generate();
+        }
     }
 
     /**

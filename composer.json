@@ -1,40 +1,40 @@
 {
-  "name": "dieschittigs/contao-content-api-bundle",
-  "description": "Access Contao content via an easy to use JSON-API",
-  "type": "contao-bundle",
-  "keywords": [
-    "contao",
-    "api",
-    "bundle",
-    "json"
-  ],
-  "require": {
-    "php": "^5.6|^7.0",
-    "contao/core-bundle": "^4.4"
-  },
-  "require-dev": {
-    "evert/phpdoc-md": "~0.2.0"
-  },
-  "license": "MIT",
-  "authors": [
-    {
-      "name": "Tobias Duehr",
-      "email": "tobias@dieschittigs.de"
-    }
-  ],
-  "autoload": {
-    "psr-4": {
-      "DieSchittigs\\ContaoContentApiBundle\\": "src/"
-    },
-    "classmap": [
-      "src/Resources/contao/"
+    "name": "dieschittigs/contao-content-api-bundle",
+    "description": "Access Contao content via an easy to use JSON-API",
+    "type": "contao-bundle",
+    "keywords": [
+        "contao",
+        "api",
+        "bundle",
+        "json"
     ],
-    "exclude-from-classmap": [
-      "src/Resources/contao/config/",
-      "src/Resources/contao/dca/"
-    ]
-  },
-  "extra": {
-    "contao-manager-plugin": "DieSchittigs\\ContaoContentApiBundle\\ContaoManager\\Plugin"
-  }
+    "require": {
+        "php": "^7.2",
+        "contao/core-bundle": "^4.4"
+    },
+    "require-dev": {
+        "evert/phpdoc-md": "~0.2.0"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tobias Duehr",
+            "email": "tobias@dieschittigs.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "DieSchittigs\\ContaoContentApiBundle\\": "src/"
+        },
+        "classmap": [
+            "src/Resources/contao/"
+        ],
+        "exclude-from-classmap": [
+            "src/Resources/contao/config/",
+            "src/Resources/contao/dca/"
+        ]
+    },
+    "extra": {
+        "contao-manager-plugin": "DieSchittigs\\ContaoContentApiBundle\\ContaoManager\\Plugin"
+    }
 }

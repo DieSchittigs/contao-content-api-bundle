@@ -1,5 +1,6 @@
 parameters:
   content_api_enabled: true
+  content_api_compile_html: false
   content_api_readers:
     newsreader: NewsModel
   content_api_modules:

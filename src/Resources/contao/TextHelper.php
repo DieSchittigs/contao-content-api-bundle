@@ -9,7 +9,7 @@ class TextHelper
     public static function get($langFiles, $lang = null)
     {
         if (!is_array($langFiles)) {
-            $langfiles = [$langFiles];
+            $langFiles = [$langFiles];
         }
         $GLOBALS['TL_LANG'] = [];
         foreach ($langFiles as $langFile) {

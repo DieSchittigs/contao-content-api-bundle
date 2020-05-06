@@ -3,7 +3,7 @@
 namespace DieSchittigs\ContaoContentApiBundle\Controller;
 
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use DieSchittigs\ContaoContentApiBundle\File;
 use DieSchittigs\ContaoContentApiBundle\ApiModule;
@@ -11,7 +11,6 @@ use DieSchittigs\ContaoContentApiBundle\ContentApiResponse;
 use DieSchittigs\ContaoContentApiBundle\Sitemap;
 use DieSchittigs\ContaoContentApiBundle\SitemapFlat;
 use DieSchittigs\ContaoContentApiBundle\Page;
-use DieSchittigs\ContaoContentApiBundle\Reader;
 use DieSchittigs\ContaoContentApiBundle\UrlHelper;
 use DieSchittigs\ContaoContentApiBundle\TextHelper;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +24,7 @@ use DieSchittigs\ContaoContentApiBundle\ApiUser;
  *
  * @Route("/api", defaults={"_scope" = "frontend", "_token_check" = false})
  */
-class ContentApiController extends Controller
+class ContentApiController extends AbstractController
 {
     private $apiUser;
     private $lang = null;
@@ -225,5 +224,17 @@ class ContentApiController extends Controller
         }
 
         return new ContentApiResponse($page->toJson(), 200, $this->headers);
+    }
+
+    /**
+     * Gets a container configuration parameter by its name.
+     *
+     * @return mixed
+     *
+     * @final
+     */
+    protected function getParameter(string $name)
+    {
+        return System::getContainer()->getParameter($name);
     }
 }
