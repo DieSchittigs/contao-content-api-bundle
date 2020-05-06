@@ -26,8 +26,8 @@ class ApiUser extends Frontend implements ContaoJsonSerializable
         $model = MemberModel::findById($this->User->id);
         $model->groups = $this->User->groups;
         $model->roles = $this->User->getRoles();
-        $model->password = null;
-        $model->session = null;
+        unset($model->password);
+        unset($model->session);
 
         return new ContaoJson($model);
     }
