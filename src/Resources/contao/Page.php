@@ -14,6 +14,7 @@ class Page extends AugmentedContaoModel
     public $url;
     public $urlAbsolute;
     public $articles;
+    public $layout;
     /**
      * constructor.
      *
@@ -30,6 +31,7 @@ class Page extends AugmentedContaoModel
         $this->urlAbsolute = $this->model->getAbsoluteUrl();
         Controller::setStaticUrls($this->model);
         $this->articles = Article::findByPageId($this->id, $url);
+        $this->layout = new Layout($this->model->layout);
     }
 
     public static function findByUrl($url, $exactMatch = true)

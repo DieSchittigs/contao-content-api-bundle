@@ -79,7 +79,7 @@ class Sitemap implements \IteratorAggregate, \ArrayAccess, \Countable, ContaoJso
         unset($this->sitemap[$offset]);
     }
 
-    public function count(): integer
+    public function count(): int
     {
         return count($this->sitemap);
     }

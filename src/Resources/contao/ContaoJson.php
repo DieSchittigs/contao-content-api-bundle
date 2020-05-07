@@ -6,6 +6,7 @@ use Contao\Model\Collection;
 use Contao\Model;
 use Contao\Controller;
 use Contao\StringUtil;
+use Contao\Template;
 
 /**
  * ContaoJson tries to pack "everything Contao" into a JSON-serializable package.
@@ -56,7 +57,21 @@ class ContaoJson implements \JsonSerializable
             $data = $this->handleCollection($data);
         }
         if ($data instanceof Model) {
-            $data = $data->row();
+            $_data = $data->row();
+            try {
+                $reflection = new \ReflectionClass($data);
+                $property = $reflection->getProperty("arrModified");
+                $property->setAccessible(true);
+                $arrModified = $property->getValue($data);
+                foreach ($arrModified as $key => $value) {
+                    if (!isset($_data[$key]) || !$_data[$key]) $_data[$key] = $value;
+                }
+            } catch (\Exception $e) {
+            }
+            $data = $_data;
+        }
+        if ($data instanceof Template) {
+            $data = $data->getData();
         }
         if (is_array($data)) {
             if ($this->isAssoc($data)) {
@@ -105,7 +120,7 @@ class ContaoJson implements \JsonSerializable
                 unset($object->{$key});
                 continue;
             }
-            if ((strpos($key, 'SRC') !== false || $key == 'pageImage') && $value) {
+            if ((strpos($key, 'SRC') !== false || $key == 'pageImage' || $key == 'folders') && $value) {
                 $src = $this->unserialize($value);
                 if (is_array($src)) {
                     $files = [];
@@ -157,8 +172,8 @@ class ContaoJson implements \JsonSerializable
 
     private function unserialize(string $string)
     {
-        $unserialized = @unserialize($string);
-        if ($unserialized !== false) {
+        $unserialized = @StringUtil::deserialize($string);
+        if (is_array($unserialized)) {
             if ($this->isAssoc($unserialized)) {
                 return (object) $unserialized;
             } else {

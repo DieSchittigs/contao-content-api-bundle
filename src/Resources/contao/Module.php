@@ -2,6 +2,7 @@
 
 namespace DieSchittigs\ContaoContentApiBundle;
 
+use Contao\FrontendTemplate;
 use Contao\ModuleModel;
 use Contao\Module;
 use Contao\System;
@@ -13,6 +14,8 @@ use Contao\StringUtil;
 class ApiModule extends AugmentedContaoModel
 {
     public $article;
+    public $compiledHTML;
+    public $template;
     /**
      * constructor.
      *
@@ -23,23 +26,29 @@ class ApiModule extends AugmentedContaoModel
         $readers = System::getContainer()->getParameter('content_api_readers');
         $this->model = ModuleModel::findByPk($id);
         $moduleClass = Module::findClass($this->type);
-        if (System::getContainer()->getParameter('content_api_compile_html')) {
-            try {
-                $strColumn = null;
-                // Add compatibility to new front end module fragments
-                if (defined('VERSION')) {
-                    if (version_compare(VERSION, '4.5', '>=')) {
-                        if ($moduleClass === \Contao\ModuleProxy::class) {
-                            $strColumn = 'main';
-                        }
+        try {
+            $strColumn = null;
+            // Add compatibility to new front end module fragments
+            if (defined('VERSION')) {
+                if (version_compare(VERSION, '4.5', '>=')) {
+                    if ($moduleClass === \Contao\ModuleProxy::class) {
+                        $strColumn = 'main';
                     }
                 }
-                $module = new $moduleClass($this->model, $strColumn);
-                $this->compiledHTML = @$module->generate() ?? null;
-            } catch (\Exception $e) {
-                $this->compiledHTML = null;
             }
+            $r = new \ReflectionMethod($moduleClass, 'compile');
+            $r->setAccessible(true);
+            $module = new $moduleClass($this->model, $strColumn);
+            $module->Template = new FrontendTemplate();
+            $r->invoke($module);
+            $this->template = $module->Template;
+            if (System::getContainer()->getParameter('content_api_compile_html'))
+                $this->compiledHTML = @$module->generate() ?? null;
+        } catch (\Exception $e) {
+            $this->template = null;
+            $this->compiledHTML = null;
         }
+
         if ($url !== null) {
             foreach ($readers as $type => $model) {
                 if ($this->type == $type) {
