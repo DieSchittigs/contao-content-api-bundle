@@ -28,7 +28,7 @@ class Layout extends AugmentedContaoModel
         foreach ($modules as $i => $module) {
             if (!$module['enable'] || $module['mod'] == 0) continue;
             if (!isset($this->modules[$module['col']])) $this->modules[$module['col']] = [];
-            $this->modules[$module['col']] = new ApiModule($module['mod']);
+            $this->modules[$module['col']][] = new ApiModule($module['mod']);
         }
     }
 }
