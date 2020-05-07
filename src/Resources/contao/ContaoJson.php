@@ -150,9 +150,6 @@ class ContaoJson implements \JsonSerializable
     {
         // Fix binary or otherwise "broken" strings
         $string = mb_convert_encoding($string, 'UTF-8', 'UTF-8');
-        if (strpos($string, 'TEMPLATE START:') !== false) {
-            return new ContaoJson($this->htmlToObj($string));
-        }
         $unserialized = $this->unserialize($string);
         if (!is_string($unserialized)) {
             return new ContaoJson($unserialized);
@@ -160,7 +157,13 @@ class ContaoJson implements \JsonSerializable
         $string = Controller::replaceInsertTags($string);
         $string = trim($string);
         $string = preg_replace('/[[:blank:]]+/', ' ', $string);
-
+        if (strpos($string, '<') === 0) {
+            $_string = trim(preg_replace("/<!--.*?-->/ms", "", $string));
+            return [
+                'html' => $string,
+                'parsed' => new ContaoJson($this->htmlToObj($_string))
+            ];
+        }
         return StringUtil::decodeEntities($string, ENT_HTML5, 'UTF-8');
     }
 
@@ -191,7 +194,7 @@ class ContaoJson implements \JsonSerializable
     {
         $dom = new \DOMDocument();
         try {
-            $dom->loadHTML($html);
+            @$dom->loadHTML('<body>' . $html . '</body>');
             $body = $dom->getElementsByTagName('body')->item(0);
             return $this->elementToObj($body)['children'];
         } catch (\Exception $e) {
@@ -201,7 +204,7 @@ class ContaoJson implements \JsonSerializable
 
     private function elementToObj($element)
     {
-        $obj = array("tag" => $element->tagName);
+        $obj = array("unit" => $element->tagName);
         if ($element->attributes) {
             foreach ($element->attributes as $attribute) {
                 $obj[$attribute->name] = $attribute->value;
@@ -209,7 +212,7 @@ class ContaoJson implements \JsonSerializable
         }
         foreach ($element->childNodes as $subElement) {
             if ($subElement->nodeType == XML_TEXT_NODE) {
-                $obj["html"] = $subElement->wholeText;
+                $obj["value"] = $subElement->wholeText;
             } else {
                 $obj["children"][] = $this->elementToObj($subElement);
             }
