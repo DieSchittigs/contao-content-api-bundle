@@ -204,19 +204,23 @@ class ContaoJson implements \JsonSerializable
 
     private function elementToObj($element)
     {
-        $obj = array("unit" => $element->tagName);
+        $obj = ["unit" => $element->tagName];
         if ($element->attributes) {
             foreach ($element->attributes as $attribute) {
                 $obj[$attribute->name] = $attribute->value;
             }
         }
         foreach ($element->childNodes as $subElement) {
-            if ($subElement->nodeType == XML_TEXT_NODE) {
-                $obj["value"] = $subElement->wholeText;
+            if ($subElement->nodeType == XML_TEXT_NODE && trim($subElement->wholeText)) {
+                if (!$obj["value"]) $obj["value"] = [];
+                $obj["value"][] = $subElement->wholeText;
             } else {
-                $obj["children"][] = $this->elementToObj($subElement);
+                $child = $this->elementToObj($subElement);
+                if ($child) $obj["children"][] = $child;
             }
         }
+        if (!$obj["unit"] && !$obj["value"]) return null;
+
         return $obj;
     }
 
