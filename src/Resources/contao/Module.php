@@ -53,12 +53,12 @@ class ApiModule extends AugmentedContaoModel
             foreach ($readers as $type => $model) {
                 if ($this->type == $type) {
                     $this->article = new Reader($model, $url);
-                    if ($this->imgSize && !trim(
+                    if (!$this->article->size || ($this->imgSize && !trim(
                         implode(
                             '',
                             StringUtil::deserialize($this->article->size)
                         )
-                    )) $this->article->size = $this->imgSize;
+                    ))) $this->article->size = $this->imgSize;
                 }
             }
         }

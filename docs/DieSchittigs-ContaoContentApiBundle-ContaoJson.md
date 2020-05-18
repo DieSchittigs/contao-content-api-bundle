@@ -183,6 +183,38 @@ constructor.
 
 
 
+### htmlToObj
+
+    mixed DieSchittigs\ContaoContentApiBundle\ContaoJson::htmlToObj($html)
+
+
+
+
+
+* Visibility: **private**
+
+
+#### Arguments
+* $html **mixed**
+
+
+
+### elementToObj
+
+    mixed DieSchittigs\ContaoContentApiBundle\ContaoJson::elementToObj($element)
+
+
+
+
+
+* Visibility: **private**
+
+
+#### Arguments
+* $element **mixed**
+
+
+
 ### jsonSerialize
 
     mixed DieSchittigs\ContaoContentApiBundle\ContaoJson::jsonSerialize()

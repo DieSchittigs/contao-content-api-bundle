@@ -18,6 +18,39 @@ Properties
 ----------
 
 
+### $article
+
+    public mixed $article
+
+
+
+
+
+* Visibility: **public**
+
+
+### $compiledHTML
+
+    public mixed $compiledHTML
+
+
+
+
+
+* Visibility: **public**
+
+
+### $template
+
+    public mixed $template
+
+
+
+
+
+* Visibility: **public**
+
+
 ### $model
 
     public mixed $model = null
@@ -35,7 +68,7 @@ Methods
 
 ### __construct
 
-    mixed DieSchittigs\ContaoContentApiBundle\ApiModule::__construct(integer $id)
+    mixed DieSchittigs\ContaoContentApiBundle\ApiModule::__construct(integer $id, $url)
 
 constructor.
 
@@ -46,6 +79,7 @@ constructor.
 
 #### Arguments
 * $id **integer** - &lt;p&gt;id of the ModuleModel&lt;/p&gt;
+* $url **mixed**
 
 
 
@@ -77,23 +111,5 @@ Get the value from the attached model.
 
 #### Arguments
 * $property **string** - &lt;p&gt;key&lt;/p&gt;
-
-
-
-### __set
-
-    mixed DieSchittigs\ContaoContentApiBundle\AugmentedContaoModel::__set(string $property, mixed $value)
-
-Set the value in the attached model.
-
-
-
-* Visibility: **public**
-* This method is defined by [DieSchittigs\ContaoContentApiBundle\AugmentedContaoModel](DieSchittigs-ContaoContentApiBundle-AugmentedContaoModel.md)
-
-
-#### Arguments
-* $property **string** - &lt;p&gt;key&lt;/p&gt;
-* $value **mixed** - &lt;p&gt;value&lt;/p&gt;
 
 

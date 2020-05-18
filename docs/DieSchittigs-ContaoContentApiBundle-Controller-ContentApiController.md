@@ -8,7 +8,7 @@ ContentApiController provides all routes.
 
 * Class name: ContentApiController
 * Namespace: DieSchittigs\ContaoContentApiBundle\Controller
-* Parent class: Symfony\Bundle\FrameworkBundle\Controller\Controller
+* Parent class: Symfony\Bundle\FrameworkBundle\Controller\AbstractController
 
 
 
@@ -79,22 +79,6 @@ Called at the begin of every request.
 ### sitemapFlatAction
 
     \Symfony\Component\HttpFoundation\Response DieSchittigs\ContaoContentApiBundle\Controller\ContentApiController::sitemapFlatAction(\Symfony\Component\HttpFoundation\Request $request)
-
-
-
-
-
-* Visibility: **public**
-
-
-#### Arguments
-* $request **Symfony\Component\HttpFoundation\Request** - &lt;p&gt;Current request&lt;/p&gt;
-
-
-
-### pageAction
-
-    \Symfony\Component\HttpFoundation\Response DieSchittigs\ContaoContentApiBundle\Controller\ContentApiController::pageAction(\Symfony\Component\HttpFoundation\Request $request)
 
 
 
@@ -188,23 +172,6 @@ Called at the begin of every request.
 
 
 
-### readerAction
-
-    \Symfony\Component\HttpFoundation\Response DieSchittigs\ContaoContentApiBundle\Controller\ContentApiController::readerAction(string $reader, \Symfony\Component\HttpFoundation\Request $request)
-
-
-
-
-
-* Visibility: **public**
-
-
-#### Arguments
-* $reader **string** - &lt;p&gt;Reader (e.g. newsreader)&lt;/p&gt;
-* $request **Symfony\Component\HttpFoundation\Request** - &lt;p&gt;Current request&lt;/p&gt;
-
-
-
 ### indexAction
 
     \Symfony\Component\HttpFoundation\Response DieSchittigs\ContaoContentApiBundle\Controller\ContentApiController::indexAction(\Symfony\Component\HttpFoundation\Request $request)
@@ -218,5 +185,21 @@ Called at the begin of every request.
 
 #### Arguments
 * $request **Symfony\Component\HttpFoundation\Request** - &lt;p&gt;Current request&lt;/p&gt;
+
+
+
+### getParameter
+
+    mixed DieSchittigs\ContaoContentApiBundle\Controller\ContentApiController::getParameter(\DieSchittigs\ContaoContentApiBundle\Controller\string $name)
+
+Gets a container configuration parameter by its name.
+
+
+
+* Visibility: **protected**
+
+
+#### Arguments
+* $name **DieSchittigs\ContaoContentApiBundle\Controller\string**
 
 

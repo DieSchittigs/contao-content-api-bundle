@@ -30,6 +30,17 @@ Properties
 * This property is **static**.
 
 
+### $mime
+
+    public mixed $mime
+
+
+
+
+
+* Visibility: **public**
+
+
 ### $model
 
     public mixed $model = null
@@ -126,23 +137,5 @@ Get the value from the attached model.
 
 #### Arguments
 * $property **string** - &lt;p&gt;key&lt;/p&gt;
-
-
-
-### __set
-
-    mixed DieSchittigs\ContaoContentApiBundle\AugmentedContaoModel::__set(string $property, mixed $value)
-
-Set the value in the attached model.
-
-
-
-* Visibility: **public**
-* This method is defined by [DieSchittigs\ContaoContentApiBundle\AugmentedContaoModel](DieSchittigs-ContaoContentApiBundle-AugmentedContaoModel.md)
-
-
-#### Arguments
-* $property **string** - &lt;p&gt;key&lt;/p&gt;
-* $value **mixed** - &lt;p&gt;value&lt;/p&gt;
 
 

@@ -29,6 +29,17 @@ Properties
 * Visibility: **public**
 
 
+### $suffix
+
+    private mixed $suffix
+
+
+
+
+
+* Visibility: **private**
+
+
 Methods
 -------
 
@@ -46,6 +57,22 @@ constructor.
 
 #### Arguments
 * $language **string** - &lt;p&gt;If set, ignores other languages&lt;/p&gt;
+
+
+
+### removeSuffix
+
+    mixed DieSchittigs\ContaoContentApiBundle\SitemapFlat::removeSuffix($url)
+
+
+
+
+
+* Visibility: **private**
+
+
+#### Arguments
+* $url **mixed**
 
 
 

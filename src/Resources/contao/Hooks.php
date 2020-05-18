@@ -17,9 +17,9 @@ class Hooks
                 $module->news_featured == 'featured',
                 $module->numberOfItems,
                 0
-            );
+            ) ?? [];
             foreach ($module->newsItems as $item) {
-                if ($_module->imgSize && !trim(
+                if ($_module->imgSize && !$item->size || !trim(
                     implode(
                         '',
                         StringUtil::deserialize($item->size)

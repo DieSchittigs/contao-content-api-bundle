@@ -18,6 +18,17 @@ Properties
 ----------
 
 
+### $content
+
+    public mixed $content = array()
+
+
+
+
+
+* Visibility: **public**
+
+
 ### $model
 
     public mixed $model = null
@@ -35,7 +46,7 @@ Methods
 
 ### __construct
 
-    mixed DieSchittigs\ContaoContentApiBundle\Article::__construct(integer $id)
+    mixed DieSchittigs\ContaoContentApiBundle\Article::__construct(integer $id, $url)
 
 constructor.
 
@@ -46,12 +57,13 @@ constructor.
 
 #### Arguments
 * $id **integer** - &lt;p&gt;id of the ArticleModel&lt;/p&gt;
+* $url **mixed**
 
 
 
 ### findByPageId
 
-    mixed DieSchittigs\ContaoContentApiBundle\Article::findByPageId(integer $pid)
+    mixed DieSchittigs\ContaoContentApiBundle\Article::findByPageId(integer $pid, $url)
 
 Gets article by parent page id.
 
@@ -63,22 +75,7 @@ Gets article by parent page id.
 
 #### Arguments
 * $pid **integer** - &lt;p&gt;id of the page&lt;/p&gt;
-
-
-
-### hasReader
-
-    mixed DieSchittigs\ContaoContentApiBundle\Article::hasReader(string $readerType)
-
-Does this Article have a reader module?
-
-
-
-* Visibility: **public**
-
-
-#### Arguments
-* $readerType **string** - &lt;p&gt;What kind of reader? e.g. &#039;newsreader&#039;&lt;/p&gt;
+* $url **mixed**
 
 
 
@@ -110,23 +107,5 @@ Get the value from the attached model.
 
 #### Arguments
 * $property **string** - &lt;p&gt;key&lt;/p&gt;
-
-
-
-### __set
-
-    mixed DieSchittigs\ContaoContentApiBundle\AugmentedContaoModel::__set(string $property, mixed $value)
-
-Set the value in the attached model.
-
-
-
-* Visibility: **public**
-* This method is defined by [DieSchittigs\ContaoContentApiBundle\AugmentedContaoModel](DieSchittigs-ContaoContentApiBundle-AugmentedContaoModel.md)
-
-
-#### Arguments
-* $property **string** - &lt;p&gt;key&lt;/p&gt;
-* $value **mixed** - &lt;p&gt;value&lt;/p&gt;
 
 

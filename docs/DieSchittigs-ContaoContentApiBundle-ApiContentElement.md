@@ -18,6 +18,39 @@ Properties
 ----------
 
 
+### $content
+
+    public mixed $content = array()
+
+
+
+
+
+* Visibility: **public**
+
+
+### $module
+
+    public mixed $module
+
+
+
+
+
+* Visibility: **public**
+
+
+### $form
+
+    public mixed $form
+
+
+
+
+
+* Visibility: **public**
+
+
 ### $model
 
     public mixed $model = null
@@ -35,7 +68,7 @@ Methods
 
 ### __construct
 
-    mixed DieSchittigs\ContaoContentApiBundle\ApiContentElement::__construct(integer $id, string $inColumn)
+    mixed DieSchittigs\ContaoContentApiBundle\ApiContentElement::__construct(integer $id, string $inColumn, $url)
 
 constructor.
 
@@ -47,12 +80,13 @@ constructor.
 #### Arguments
 * $id **integer** - &lt;p&gt;id of the ContentModel&lt;/p&gt;
 * $inColumn **string** - &lt;p&gt;In which column does the Content Element reside in&lt;/p&gt;
+* $url **mixed**
 
 
 
 ### findByPidAndTable
 
-    mixed DieSchittigs\ContaoContentApiBundle\ApiContentElement::findByPidAndTable(integer $pid, string $table, string $inColumn)
+    mixed DieSchittigs\ContaoContentApiBundle\ApiContentElement::findByPidAndTable(integer $pid, string $table, string $inColumn, $url)
 
 Select by Parent ID and Table.
 
@@ -66,22 +100,7 @@ Select by Parent ID and Table.
 * $pid **integer** - &lt;p&gt;Parent ID&lt;/p&gt;
 * $table **string** - &lt;p&gt;Parent table&lt;/p&gt;
 * $inColumn **string** - &lt;p&gt;In which column doe the Content Elements reside in&lt;/p&gt;
-
-
-
-### hasReader
-
-    mixed DieSchittigs\ContaoContentApiBundle\ApiContentElement::hasReader(string $readerType)
-
-Does this Content Element have a reader module?
-
-
-
-* Visibility: **public**
-
-
-#### Arguments
-* $readerType **string** - &lt;p&gt;What kind of reader? e.g. &#039;newsreader&#039;&lt;/p&gt;
+* $url **mixed**
 
 
 
@@ -113,23 +132,5 @@ Get the value from the attached model.
 
 #### Arguments
 * $property **string** - &lt;p&gt;key&lt;/p&gt;
-
-
-
-### __set
-
-    mixed DieSchittigs\ContaoContentApiBundle\AugmentedContaoModel::__set(string $property, mixed $value)
-
-Set the value in the attached model.
-
-
-
-* Visibility: **public**
-* This method is defined by [DieSchittigs\ContaoContentApiBundle\AugmentedContaoModel](DieSchittigs-ContaoContentApiBundle-AugmentedContaoModel.md)
-
-
-#### Arguments
-* $property **string** - &lt;p&gt;key&lt;/p&gt;
-* $value **mixed** - &lt;p&gt;value&lt;/p&gt;
 
 
