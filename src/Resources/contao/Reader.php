@@ -23,6 +23,18 @@ class Reader extends AugmentedContaoModel
         if (!$this->model || !Controller::isVisibleElement($this->model)) {
             return null;
         }
+        /*
+        if ($this->model->languageMain) {
+            $mainId = $this->model->languageMain === 0 ? $this->model->id : $this->model->languageMain;
+            $languageMain = $model::findOneById($mainId);
+            $languageReferenced = $languageMain::findByLanguageMain($mainId);
+            $otherLanguages = [$languageMain->url];
+            foreach ($languageReferenced as $model) {
+                $otherLanguages[] = $model->url;
+            }
+            //print_r($otherLanguages);
+        }
+        */
         $this->content = ApiContentElement::findByPidAndTable($this->id, $model::getTable());
     }
 

@@ -161,7 +161,7 @@ class ContaoJson implements \JsonSerializable
             $_string = trim(preg_replace("/<!--.*?-->/ms", "", $string));
             return [
                 'html' => $string,
-                'parsed' => new ContaoJson($this->htmlToObj($_string))
+                //'parsed' => new ContaoJson($this->htmlToObj($_string))
             ];
         }
         return StringUtil::decodeEntities($string, ENT_HTML5, 'UTF-8');
