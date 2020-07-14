@@ -20,7 +20,7 @@ abstract class AugmentedContaoModel implements ContaoJsonSerializable
             $this->model->{$prop->name} = $this->{$prop->name};
         }
 
-        return new ContaoJson($this->model);;
+        return new ContaoJson($this->model);
     }
 
     /**

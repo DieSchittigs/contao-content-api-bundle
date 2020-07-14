@@ -18,9 +18,10 @@ class File extends AugmentedContaoModel
         'singleSRC',
         'meta',
         'size',
-        'filesModel',
+        'filesModel'
     ];
     public $mime;
+    public $image;
 
     /**
      * constructor.
@@ -104,10 +105,10 @@ class File extends AugmentedContaoModel
         if (!$this->model) {
             return parent::toJson();
         }
-        $file = $this->model->row();
-        unset($file['uuid']);
-        unset($file['pid']);
+        $file = parent::toJson();
+        unset($file->data->uuid);
+        unset($file->data->pid);
 
-        return new ContaoJson($file);
+        return $file;
     }
 }

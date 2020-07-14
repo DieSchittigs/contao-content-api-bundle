@@ -130,6 +130,8 @@ class ContaoJson implements \JsonSerializable
                     $data->{$key} = $files;
                 } else {
                     $data->{$key} = (new File($src, $object->size ?? null))->toJson();
+                    //print_r($src);
+                    //print_r($object->size);
                 }
             } else if ($key == 'author' && is_numeric($value)) {
                 $data->{$key} = (new Author($value))->toJson();
