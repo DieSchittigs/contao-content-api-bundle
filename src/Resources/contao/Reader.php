@@ -36,6 +36,9 @@ class Reader extends AugmentedContaoModel
         }
         */
         $this->content = ApiContentElement::findByPidAndTable($this->id, $model::getTable());
+        if ($this->content) {
+            $GLOBALS['content_api_has_active_reader'] = true;
+        }
     }
 
     /**
