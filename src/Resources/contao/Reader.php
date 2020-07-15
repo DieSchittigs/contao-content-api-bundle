@@ -35,7 +35,9 @@ class Reader extends AugmentedContaoModel
             //print_r($otherLanguages);
         }
         */
-        $this->content = ApiContentElement::findByPidAndTable($this->id, $model::getTable());
+        $contentElements = ApiContentElement::findByPidAndTable($this->id, $model::getTable());
+        $this->content = ApiContentElement::stackWrappers($contentElements);
+
         if ($this->content) {
             $GLOBALS['content_api_has_active_reader'] = true;
         }

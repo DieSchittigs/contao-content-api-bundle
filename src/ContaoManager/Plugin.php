@@ -18,7 +18,10 @@ class Plugin implements BundlePluginInterface, RoutingPluginInterface
     {
         return [
             BundleConfig::create('DieSchittigs\ContaoContentApiBundle\ContaoContentApiBundle')
-                ->setLoadAfter(['Contao\CoreBundle\ContaoCoreBundle']),
+                ->setLoadAfter([
+                    'DieSchittigs\HelperBundle\ContaoHelperBundle',
+                    'Contao\CoreBundle\ContaoCoreBundle'
+                ]),
         ];
     }
 

@@ -24,18 +24,9 @@ class Article extends AugmentedContaoModel
         if (!$this->model || !Controller::isVisibleElement($this->model)) {
             return $this->model = null;
         }
-        $stack = [$this];
         $contentElements = ApiContentElement::findByPidAndTable($id, 'tl_article', $this->inColumn, $url);
-        foreach ($contentElements as $ce) {
-            if (in_array($ce->type, $GLOBALS['TL_WRAPPERS']['stop'])) {
-                if (count($stack) > 1) array_pop($stack);
-                continue;
-            }
-            $stack[count($stack) - 1]->content[] = $ce;
-            if (in_array($ce->type, $GLOBALS['TL_WRAPPERS']['start'])) {
-                $stack[] = $ce;
-            }
-        }
+        $this->content = ApiContentElement::stackWrappers($contentElements);
+        
         if (System::getContainer()->getParameter('content_api_compile_html')) {
             $module = new ModuleArticle($this->model);
             $this->compiledHTML = $module->generate();

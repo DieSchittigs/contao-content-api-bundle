@@ -8,6 +8,7 @@ use Contao\FormFieldModel;
 use Contao\ContentElement;
 use Contao\Controller;
 use Contao\System;
+use stdClass;
 
 /**
  * ApiContentElement augments ContentModel for the API.
@@ -76,4 +77,21 @@ class ApiContentElement extends AugmentedContaoModel
 
         return $contents;
     }
+
+    public static function stackWrappers($contentElements) {
+        $rootObj = new stdClass();
+        $stack = [$rootObj];
+        foreach ($contentElements as $key => $ce) {
+            if (in_array($ce->type, $GLOBALS['TL_WRAPPERS']['stop'])) {
+                if (count($stack) > 1) array_pop($stack);
+                continue;
+            }
+            $stack[count($stack) - 1]->content[] = $ce;
+            if (in_array($ce->type, $GLOBALS['TL_WRAPPERS']['start'])) {
+                $stack[] = $ce;
+            }
+        }
+        return $rootObj->content;
+    }
+    
 }
