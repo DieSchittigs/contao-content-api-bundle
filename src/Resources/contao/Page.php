@@ -29,6 +29,30 @@ class Page extends AugmentedContaoModel
         $this->model->loadDetails();
         $this->url = $this->model->getFrontendUrl();
         $this->urlAbsolute = $this->model->getAbsoluteUrl();
+        // Special case: Language Switcher (https://github.com/terminal42/contao-changelanguage)
+        if (isset($this->model->languageMain)) {
+            $this->languageUrls = [$this->model->language => [
+                'url' => $this->url,
+                'urlAbsolute' => $this->urlAbsolute,
+                'isFallback' => $this->model->rootFallbackLanguage == $this->model->language,
+            ]];
+            $select = 'languageMain=?';
+            $values = [$this->model->id];
+
+            if ($this->model->languageMain != 0 && $this->model->languageMain != $this->model->id) {
+                $select .= ' OR id=?';
+                $values[] = $this->model->languageMain;
+            }
+            $pages = PageModel::findBy([$select], $values);
+            foreach ($pages as $page) {
+                $page->loadDetails();
+                $this->languageUrls[$page->language] = [
+                    'url' => $page->getFrontendUrl(),
+                    'urlAbsolute' => $page->getAbsoluteUrl(),
+                    'isFallback' => $page->rootFallbackLanguage == $page->language,
+                ];
+            }
+        }
         Controller::setStaticUrls($this->model);
         $this->articles = Article::findByPageId($this->id, $url);
         $this->layout = new Layout($this->model->layout);

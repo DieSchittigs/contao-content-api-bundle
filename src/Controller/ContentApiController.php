@@ -209,7 +209,7 @@ class ContentApiController extends AbstractController
         $request = $this->init($request);
         $url = $request->query->get('url', '/');
 
-        $GLOBALS['content_api_has_active_reader'] = false;
+        $GLOBALS['CONTENT_API_ACTIVE_READER'] = false;
 
         try {
             $page = Page::findByUrl($url);
@@ -225,7 +225,7 @@ class ContentApiController extends AbstractController
             return new ContentApiResponse('No page found at URL ' . $url, 404);
         }
 
-        $page->hasActiveReader = $GLOBALS['content_api_has_active_reader'];
+        $page->hasActiveReader = (bool) $GLOBALS['CONTENT_API_ACTIVE_READER'];
         return new ContentApiResponse($page->toJson(), 200, $this->headers);
     }
 

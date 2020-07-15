@@ -28,6 +28,7 @@ class ContaoJson implements \JsonSerializable
 {
     public $data = null;
     private $allowedFields;
+    private $parserCache = [];
 
     /**
      * constructor.
@@ -163,7 +164,7 @@ class ContaoJson implements \JsonSerializable
             $_string = trim(preg_replace("/<!--.*?-->/ms", "", $string));
             return [
                 'html' => $string,
-                //'parsed' => new ContaoJson($this->htmlToObj($_string))
+                'parsed' => new ContaoJson($this->htmlToObj($_string))
             ];
         }
         return StringUtil::decodeEntities($string, ENT_HTML5, 'UTF-8');
@@ -194,14 +195,22 @@ class ContaoJson implements \JsonSerializable
 
     private function htmlToObj($html)
     {
-        $dom = new \DOMDocument();
-        try {
-            @$dom->loadHTML('<body>' . $html . '</body>');
-            $body = $dom->getElementsByTagName('body')->item(0);
-            return $this->elementToObj($body)['children'];
-        } catch (\Exception $e) {
-            return $html;
+        $cacheKey = md5($html);
+        if ($this->parserCache[$cacheKey]) return $this->parserCache[$cacheKey];
+        $result = ['error' => 'html could not be parsed'];
+        if (substr_count($html, '<') <= 12) {
+            $dom = new \DOMDocument();
+            try {
+                @$dom->loadHTML('<body>' . $html . '</body>');
+                $body = $dom->getElementsByTagName('body')->item(0);
+                $result = $this->elementToObj($body)['children'];
+            } catch (\Exception $e) {
+            }
+        } else {
+            $result = ['error' => 'html too long, will not be parsed'];
         }
+        $this->parserCache[$cacheKey] = $result;
+        return $result;
     }
 
     private function elementToObj($element)
@@ -215,7 +224,7 @@ class ContaoJson implements \JsonSerializable
         foreach ($element->childNodes as $subElement) {
             if ($subElement->nodeType == XML_TEXT_NODE && trim($subElement->wholeText)) {
                 if (!$obj["value"]) $obj["value"] = [];
-                $obj["value"][] = $subElement->wholeText;
+                $obj["value"][] = trim($subElement->wholeText);
             } else {
                 $child = $this->elementToObj($subElement);
                 if ($child) $obj["children"][] = $child;
