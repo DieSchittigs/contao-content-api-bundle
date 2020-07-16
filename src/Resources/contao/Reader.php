@@ -56,17 +56,19 @@ class Reader extends AugmentedContaoModel
                 $values[] = $this->model->languageMain;
             }
             $items = $model::findBy([$select], $values);
-            foreach ($items as $item) {
-                if ($item->pid) {
-                    $parent = $item->getRelated('pid');
-                    if ($parent && $parent->jumpTo) {
-                        $jumpToPage = $parent->getRelated('jumpTo');
-                        $languageUrls->addFromPage($jumpToPage, [
-                            'url' => $this->injectAlias($jumpToPage->getFrontendUrl(), $item->alias),
-                            'urlAbsolute' => $this->injectAlias($jumpToPage->getAbsoluteUrl(), $item->alias),
-                        ]);
-                    }
-                } else continue;
+            if ($items) {
+                foreach ($items as $item) {
+                    if ($item->pid) {
+                        $parent = $item->getRelated('pid');
+                        if ($parent && $parent->jumpTo) {
+                            $jumpToPage = $parent->getRelated('jumpTo');
+                            $languageUrls->addFromPage($jumpToPage, [
+                                'url' => $this->injectAlias($jumpToPage->getFrontendUrl(), $item->alias),
+                                'urlAbsolute' => $this->injectAlias($jumpToPage->getAbsoluteUrl(), $item->alias),
+                            ]);
+                        }
+                    } else continue;
+                }
             }
             $this->languageUrls = $languageUrls;
         }
