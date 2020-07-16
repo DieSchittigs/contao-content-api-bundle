@@ -56,29 +56,31 @@ class Reader extends AugmentedContaoModel
                 $values[] = $this->model->languageMain;
             }
             $items = $model::findBy([$select], $values);
-            foreach ($items as $item) {
-                $url = null;
-                $urlAbsolute = null;
-                $language = null;
-                $isFallback = false;
-                if ($item->jumpTo) $url = $item->getRelated('jumpTo');
-                elseif ($item->pid) {
-                    $parent = $item->getRelated('pid');
-                    if ($parent->jumpTo) {
-                        $jumpTo = $parent->getRelated('jumpTo');
-                        $jumpTo->loadDetails();
-                        $url = $jumpTo->getFrontendUrl();
-                        $urlAbsolute = $jumpTo->getAbsoluteUrl();
-                        $language = $jumpTo->language;
-                        $isFallback = $jumpTo->rootFallbackLanguage == $jumpTo->language;
-                    }
-                } else continue;
+            if ($items) {
+                foreach ($items as $item) {
+                    $url = null;
+                    $urlAbsolute = null;
+                    $language = null;
+                    $isFallback = false;
+                    if ($item->jumpTo) $url = $item->getRelated('jumpTo');
+                    elseif ($item->pid) {
+                        $parent = $item->getRelated('pid');
+                        if ($parent->jumpTo) {
+                            $jumpTo = $parent->getRelated('jumpTo');
+                            $jumpTo->loadDetails();
+                            $url = $jumpTo->getFrontendUrl();
+                            $urlAbsolute = $jumpTo->getAbsoluteUrl();
+                            $language = $jumpTo->language;
+                            $isFallback = $jumpTo->rootFallbackLanguage == $jumpTo->language;
+                        }
+                    } else continue;
 
-                $this->languageUrls[$language] = [
-                    'url' => $this->injectAlias($url, $item->alias),
-                    'urlAbsolute' => $this->injectAlias($urlAbsolute, $item->alias),
-                    'isFallback' => $isFallback
-                ];
+                    $this->languageUrls[$language] = [
+                        'url' => $this->injectAlias($url, $item->alias),
+                        'urlAbsolute' => $this->injectAlias($urlAbsolute, $item->alias),
+                        'isFallback' => $isFallback
+                    ];
+                }
             }
         }
 
