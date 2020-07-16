@@ -2,6 +2,8 @@
 
 namespace DieSchittigs\ContaoContentApiBundle;
 
+use Contao\PageModel;
+
 class UrlHelper
 {
     public static function getUrls($file = null)
@@ -10,7 +12,7 @@ class UrlHelper
         if ($file) {
             $urls = self::parseSitemapXml("$file.xml");
         } else {
-            foreach (scandir(TL_ROOT.'/web/share/') as $file) {
+            foreach (scandir(TL_ROOT . '/web/share/') as $file) {
                 if (substr($file, -4) == '.xml') {
                     $urls = (object) array_merge(
                         (array) $urls,
@@ -26,7 +28,7 @@ class UrlHelper
     private static function parseSitemapXml($file)
     {
         $urls = new \stdClass();
-        $filePath = TL_ROOT."/web/share/$file";
+        $filePath = TL_ROOT . "/web/share/$file";
         $xml = simplexml_load_file($filePath);
         $sitemap = json_decode(json_encode($xml));
         foreach ($sitemap->url as $item) {

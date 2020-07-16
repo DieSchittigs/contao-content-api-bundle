@@ -28,6 +28,6 @@ class ContentApiResponse extends JsonResponse
         }
         $data = $data instanceof ContaoJsonSerializable ? $data->toJson() : $data;
         parent::__construct($data, $status, $headers);
-        $this->setEncodingOptions(JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        $this->setEncodingOptions(JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRESERVE_ZERO_FRACTION);
     }
 }

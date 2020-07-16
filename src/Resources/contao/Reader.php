@@ -27,59 +27,48 @@ class Reader extends AugmentedContaoModel
 
         // Try to get info from parent, maybe even a page
         $jumpToPage = null;
+        $languageUrls = new PageUrls();
         if ($this->model->pid) {
             $this->parent = $this->model->getRelated('pid');
             if ($this->parent && $this->parent->jumpTo) {
                 $jumpToPage = $this->parent->getRelated('jumpTo');
-                $jumpToPage->loadDetails();
-                $this->parent->url = $jumpToPage->getFrontendUrl();
-                $this->parent->urlAbsolute = $jumpToPage->getAbsoluteUrl();
-                $this->urlAbsolute = $this->injectAlias($this->parent->urlAbsolute, $this->model->alias);
+                if ($jumpToPage) {
+                    $this->parent->url = $jumpToPage->getFrontendUrl();
+                    $this->parent->urlAbsolute = $jumpToPage->getAbsoluteUrl();
+                    $this->urlAbsolute = $this->injectAlias($this->parent->urlAbsolute, $this->model->alias);
+                    $this->url = $this->model->url ?: $this->injectAlias($this->parent->url, $this->model->alias);
+                }
             }
         }
 
         // Special case: Language Switcher (https://github.com/terminal42/contao-changelanguage)
         if (isset($this->model->languageMain)) {
-            $this->languageUrls = [];
-            if ($jumpToPage) {
-                $this->languageUrls[$jumpToPage->language] = [
-                    'url' => $this->injectAlias($this->parent->url, $this->model->alias),
-                    'urlAbsolute' => $this->urlAbsolute,
-                    'isFallback' => $jumpToPage->rootFallbackLanguage == $jumpToPage->language
-                ];
-            }
             $select = 'languageMain=?';
             $values = [$this->model->id];
-
+            if ($jumpToPage) {
+                $languageUrls->addFromPage($jumpToPage, [
+                    'url' => $this->injectAlias($jumpToPage->getFrontendUrl(), $this->model->alias),
+                    'urlAbsolute' => $this->injectAlias($jumpToPage->getAbsoluteUrl(), $this->model->alias),
+                ]);
+            }
             if ($this->model->languageMain != 0 && $this->model->languageMain != $this->model->id) {
                 $select .= ' OR id=?';
                 $values[] = $this->model->languageMain;
             }
             $items = $model::findBy([$select], $values);
             foreach ($items as $item) {
-                $url = null;
-                $urlAbsolute = null;
-                $language = null;
-                $isFallback = false;
-                if ($item->jumpTo) $url = $item->getRelated('jumpTo');
-                elseif ($item->pid) {
+                if ($item->pid) {
                     $parent = $item->getRelated('pid');
-                    if ($parent->jumpTo) {
-                        $jumpTo = $parent->getRelated('jumpTo');
-                        $jumpTo->loadDetails();
-                        $url = $jumpTo->getFrontendUrl();
-                        $urlAbsolute = $jumpTo->getAbsoluteUrl();
-                        $language = $jumpTo->language;
-                        $isFallback = $jumpTo->rootFallbackLanguage == $jumpTo->language;
+                    if ($parent && $parent->jumpTo) {
+                        $jumpToPage = $parent->getRelated('jumpTo');
+                        $languageUrls->addFromPage($jumpToPage, [
+                            'url' => $this->injectAlias($jumpToPage->getFrontendUrl(), $item->alias),
+                            'urlAbsolute' => $this->injectAlias($jumpToPage->getAbsoluteUrl(), $item->alias),
+                        ]);
                     }
                 } else continue;
-
-                $this->languageUrls[$language] = [
-                    'url' => $this->injectAlias($url, $item->alias),
-                    'urlAbsolute' => $this->injectAlias($urlAbsolute, $item->alias),
-                    'isFallback' => $isFallback
-                ];
             }
+            $this->languageUrls = $languageUrls;
         }
 
         $contentElements = ApiContentElement::findByPidAndTable($this->id, $model::getTable());
