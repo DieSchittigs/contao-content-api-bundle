@@ -33,6 +33,13 @@ class PageUrls implements ContaoJsonSerializable
             $this->addFromPage($page);
     }
 
+    public function combine(PageUrls $pageUrls)
+    {
+        foreach ($pageUrls->languages as $language => $urls) {
+            $this->languages->{$language} = $urls;
+        }
+    }
+
     public function toJson(): ContaoJson
     {
         return new ContaoJson($this->languages);

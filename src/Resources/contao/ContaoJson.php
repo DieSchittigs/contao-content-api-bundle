@@ -198,13 +198,15 @@ class ContaoJson implements \JsonSerializable
         $cacheKey = md5($html);
         if ($this->parserCache[$cacheKey]) return $this->parserCache[$cacheKey];
         $result = ['error' => 'html could not be parsed'];
-        if (substr_count($html, '<') <= 12) {
-            $dom = new \DOMDocument();
+        if (substr_count($html, '<') <= 32) {
+            $dom = new \DOMDocument('1.0', 'UTF-8');
             try {
-                @$dom->loadHTML('<body>' . $html . '</body>');
+                @$dom->loadHTML('<body>' . mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8') . '</body>');
                 $body = $dom->getElementsByTagName('body')->item(0);
                 $result = $this->elementToObj($body)['children'];
             } catch (\Exception $e) {
+                echo $e->getMessage();
+                exit;
             }
         } else {
             $result = ['error' => 'html too long, will not be parsed'];
@@ -221,17 +223,19 @@ class ContaoJson implements \JsonSerializable
                 $obj[$attribute->name] = $attribute->value;
             }
         }
-        foreach ($element->childNodes as $subElement) {
-            if ($subElement->nodeType == XML_TEXT_NODE && trim($subElement->wholeText)) {
-                if (!$obj["value"]) $obj["value"] = [];
-                $obj["value"][] = trim($subElement->wholeText);
-            } else {
-                $child = $this->elementToObj($subElement);
-                if ($child) $obj["children"][] = $child;
+        if ($element->childNodes) {
+            foreach ($element->childNodes as $subElement) {
+                if ($subElement->nodeType == XML_TEXT_NODE && trim($subElement->wholeText)) {
+                    if (!$obj["value"]) $obj["value"] = [];
+                    $obj["value"][] = trim($subElement->wholeText);
+                } else {
+                    $child = $this->elementToObj($subElement);
+                    if ($child) $obj["children"][] = $child;
+                }
             }
         }
         if (!$obj["unit"] && !$obj["value"]) return null;
-
+        if (is_array($obj["value"]) && count($obj["value"]) == 1) $obj["value"] = $obj["value"][0];
         return $obj;
     }
 
