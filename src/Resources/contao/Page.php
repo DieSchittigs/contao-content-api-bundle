@@ -42,7 +42,12 @@ class Page extends AugmentedContaoModel
                 $values[] = $this->model->languageMain;
             }
             $pages = PageModel::findBy([$select], $values);
-            $this->languageUrls->addFromPages($pages);
+            if ($pages) $this->languageUrls->addFromPages($pages);
+            else {
+                // At least add root pages for language selection
+                $rootPages = PageModel::findPublishedRootPages();
+                if ($rootPages) $this->languageUrls->addFromPages($rootPages);
+            }
         }
         Controller::setStaticUrls($this->model);
         $this->articles = Article::findByPageId($this->id, $url);

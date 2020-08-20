@@ -210,6 +210,7 @@ class ContentApiController extends AbstractController
         $url = $request->query->get('url', '/');
 
         $GLOBALS['CONTENT_API_ACTIVE_READER'] = false;
+        $GLOBALS['CONTENT_API_READER_LANGUAGE_URLS'] = null;
 
         try {
             $page = Page::findByUrl($url);
@@ -224,8 +225,11 @@ class ContentApiController extends AbstractController
         if (!$page) {
             return new ContentApiResponse('No page found at URL ' . $url, 404);
         }
-
         $page->hasActiveReader = (bool) $GLOBALS['CONTENT_API_ACTIVE_READER'];
+        if ($GLOBALS['CONTENT_API_READER_LANGUAGE_URLS']) {
+            $page->languageUrls->combine($GLOBALS['CONTENT_API_READER_LANGUAGE_URLS']);
+        }
+
         return new ContentApiResponse($page->toJson(), 200, $this->headers);
     }
 

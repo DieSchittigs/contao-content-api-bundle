@@ -71,6 +71,7 @@ class Reader extends AugmentedContaoModel
                 }
             }
             $this->languageUrls = $languageUrls;
+            $GLOBALS['CONTENT_API_READER_LANGUAGE_URLS'] = $this->languageUrls;
         }
 
         $contentElements = ApiContentElement::findByPidAndTable($this->id, $model::getTable());
