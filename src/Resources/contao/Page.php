@@ -37,6 +37,8 @@ class Page extends AugmentedContaoModel
 
             if ($this->model->languageMain != 0 && $this->model->languageMain != $this->model->id) {
                 $select .= ' OR id=?';
+                $select .= ' OR languageMain=?';
+                $values[] = $this->model->languageMain;
                 $values[] = $this->model->languageMain;
             }
             $pages = PageModel::findBy([$select], $values);
