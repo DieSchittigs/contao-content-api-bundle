@@ -13,7 +13,7 @@ class TextHelper
         }
         $GLOBALS['TL_LANG'] = [];
         foreach ($langFiles as $langFile) {
-            System::loadLanguageFile($langFile, $lang);
+            System::loadLanguageFile($langFile, $lang, true);
         }
 
         return (object) $GLOBALS['TL_LANG'];
