@@ -72,8 +72,21 @@ class ContentApiController extends Controller
             }
         }
         if ($this->lang) {
-            $GLOBALS['TL_LANGUAGE'] = $this->lang;
-            $_SESSION['TL_LANGUAGE'] = $this->lang;
+            if(defined('VERSION'))
+            {
+                if (version_compare(VERSION, '4.0', '<='))
+                {
+                    /**
+                     * Using the globals `$GLOBALS['TL_LANGUAGE']` and `$_SESSION['TL_LANGUAGE']`
+                     * has been deprecated in Contao 4.0
+                     * and will no longer work in Contao 5.0. Use the
+                     * locale from the request object instead:
+                     * $locale = System::getContainer()->get('request_stack')->getCurrentRequest()->getLocale();
+                     */
+                    $_SESSION['TL_LANGUAGE'] = $this->lang;
+                    $GLOBALS['TL_LANGUAGE'] = $this->lang;
+                }
+            }
             System::loadLanguageFile('default', $this->lang);
         }
         // Initialize Contao

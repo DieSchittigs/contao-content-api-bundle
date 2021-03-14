@@ -4,6 +4,7 @@ namespace DieSchittigs\ContaoContentApiBundle;
 
 use Contao\ModuleModel;
 use Contao\Module;
+use Contao\ModuleProxy;
 
 /**
  * ApiModule augments ModuleModel for the API.
