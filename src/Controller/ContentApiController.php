@@ -43,7 +43,9 @@ class ContentApiController extends Controller
         if (!$this->getParameter('content_api_enabled')) {
             die('Content API is disabled');
         }
+
         $this->headers = $this->getParameter('content_api_headers');
+
         if (isset($GLOBALS['TL_HOOKS']['apiBeforeInit']) && is_array($GLOBALS['TL_HOOKS']['apiBeforeInit'])) {
             foreach ($GLOBALS['TL_HOOKS']['apiBeforeInit'] as $callback) {
                 $request = $callback[0]::{$callback[1]}($request);
@@ -51,6 +53,7 @@ class ContentApiController extends Controller
         }
         // Override $_SERVER['REQUEST_URI']
         $_SERVER['REQUEST_URI'] = $request->query->get('url', $_SERVER['REQUEST_URI']);
+
         // Set the language
         if ($request->query->has('_locale')) {
             $this->lang = $request->query->get('_locale');
