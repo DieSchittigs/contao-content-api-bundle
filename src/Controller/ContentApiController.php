@@ -52,7 +52,11 @@ class ContentApiController extends Controller
         // Override $_SERVER['REQUEST_URI']
         $_SERVER['REQUEST_URI'] = $request->query->get('url', $_SERVER['REQUEST_URI']);
         // Set the language
-        if ($request->query->has('lang')) {
+        if($request->query->has('_locale'))
+        {
+            $this->lang = $request->query->get('_locale');
+        }
+        elseif ($request->query->has('lang')) {
             $this->lang = $request->query->get('lang');
         } elseif (Config::get('addLanguageToUrl') && $request->query->has('url')) {
             $url = $request->query->get('url');
@@ -89,6 +93,7 @@ class ContentApiController extends Controller
             }
             System::loadLanguageFile('default', $this->lang);
         }
+
         // Initialize Contao
         $this->container->get('contao.framework')->initialize();
         $this->apiUser = new ApiUser();
