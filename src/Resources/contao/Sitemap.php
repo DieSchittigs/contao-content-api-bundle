@@ -38,7 +38,6 @@ class Sitemap implements \IteratorAggregate, \ArrayAccess, \Countable, ContaoJso
         foreach ($pages as $page) {
             $page->loadDetails();
             $page->url = $page->getFrontendUrl();
-            $page->url = str_replace('.html','',$page->url);
             $page->urlAbsolute = $page->getAbsoluteUrl();
             $subSitemap = new Sitemap($language, $page->id);
             if ($language && $page->language != $language) {
