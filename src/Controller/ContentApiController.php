@@ -27,8 +27,20 @@ use DieSchittigs\ContaoContentApiBundle\ApiUser;
  */
 class ContentApiController extends Controller
 {
+    /**
+     * @var ApiUser
+     */
     private $apiUser;
+
+    /**
+     * @var null
+     */
     private $lang = null;
+
+    /**
+     * @var string
+     */
+    private $header;
 
     /**
      * Called at the begin of every request.
@@ -51,6 +63,7 @@ class ContentApiController extends Controller
                 $request = $callback[0]::{$callback[1]}($request);
             }
         }
+        
         // Override $_SERVER['REQUEST_URI']
         $_SERVER['REQUEST_URI'] = $request->query->get('url', $_SERVER['REQUEST_URI']);
 
