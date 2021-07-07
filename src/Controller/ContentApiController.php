@@ -27,8 +27,20 @@ use DieSchittigs\ContaoContentApiBundle\ApiUser;
  */
 class ContentApiController extends Controller
 {
+    /**
+     * @var ApiUser
+     */
     private $apiUser;
+
+    /**
+     * @var null
+     */
     private $lang = null;
+
+    /**
+     * @var string
+     */
+    private $header;
 
     /**
      * Called at the begin of every request.
@@ -43,16 +55,22 @@ class ContentApiController extends Controller
         if (!$this->getParameter('content_api_enabled')) {
             die('Content API is disabled');
         }
+
         $this->headers = $this->getParameter('content_api_headers');
+
         if (isset($GLOBALS['TL_HOOKS']['apiBeforeInit']) && is_array($GLOBALS['TL_HOOKS']['apiBeforeInit'])) {
             foreach ($GLOBALS['TL_HOOKS']['apiBeforeInit'] as $callback) {
                 $request = $callback[0]::{$callback[1]}($request);
             }
         }
+        
         // Override $_SERVER['REQUEST_URI']
         $_SERVER['REQUEST_URI'] = $request->query->get('url', $_SERVER['REQUEST_URI']);
+
         // Set the language
-        if ($request->query->has('lang')) {
+        if ($request->query->has('_locale')) {
+            $this->lang = $request->query->get('_locale');
+        } elseif ($request->query->has('lang')) {
             $this->lang = $request->query->get('lang');
         } elseif (Config::get('addLanguageToUrl') && $request->query->has('url')) {
             $url = $request->query->get('url');
@@ -72,10 +90,25 @@ class ContentApiController extends Controller
             }
         }
         if ($this->lang) {
-            $GLOBALS['TL_LANGUAGE'] = $this->lang;
-            $_SESSION['TL_LANGUAGE'] = $this->lang;
+            if (defined('VERSION')) {
+                if (version_compare(VERSION, '4.0', '<=')) {
+                    /**
+                     * Using the globals `$GLOBALS['TL_LANGUAGE']` and `$_SESSION['TL_LANGUAGE']`
+                     * has been deprecated in Contao 4.0
+                     * and will no longer work in Contao 5.0. Use the
+                     * locale from the request object instead:
+                     * $locale = System::getContainer()->get('request_stack')->getCurrentRequest()->getLocale();
+                     */
+                    $_SESSION['TL_LANGUAGE'] = $this->lang;
+                    $GLOBALS['TL_LANGUAGE'] = $this->lang;
+                }
+            }
             System::loadLanguageFile('default', $this->lang);
+        } else {
+            // Use Contao fallback language
+            System::loadLanguageFile('default', 'undefined');
         }
+
         // Initialize Contao
         $this->container->get('contao.framework')->initialize();
         $this->apiUser = new ApiUser();
@@ -92,11 +125,11 @@ class ContentApiController extends Controller
     }
 
     /**
+     * @param Request $request Current request
      * @return Response
      *
      * @Route("/sitemap", name="content_api_sitemap")
      *
-     * @param Request $request Current request
      */
     public function sitemapAction(Request $request)
     {
@@ -107,11 +140,11 @@ class ContentApiController extends Controller
     }
 
     /**
+     * @param Request $request Current request
      * @return Response
      *
      * @Route("/sitemap/flat", name="content_api_sitemap_flat")
      *
-     * @param Request $request Current request
      */
     public function sitemapFlatAction(Request $request)
     {
@@ -121,11 +154,11 @@ class ContentApiController extends Controller
     }
 
     /**
+     * @param Request $request Current request
      * @return Response
      *
      * @Route("/page", name="content_api_page")
      *
-     * @param Request $request Current request
      */
     public function pageAction(Request $request)
     {
@@ -138,11 +171,11 @@ class ContentApiController extends Controller
     }
 
     /**
+     * @param Request $request Current request
      * @return Response
      *
      * @Route("/user", name="content_api_user")
      *
-     * @param Request $request Current request
      */
     public function userAction(Request $request)
     {
@@ -152,28 +185,30 @@ class ContentApiController extends Controller
     }
 
     /**
+     * @param Request $request Current request
      * @return Response
      *
      * @Route("/text", name="content_api_text")
      *
-     * @param Request $request Current request
      */
     public function textAction(Request $request)
     {
         $request = $this->init($request);
 
-        return new ContentApiResponse(TextHelper::get(
-            explode(',', $request->query->get('file', 'default')),
-            $this->lang
-        ), 200, $this->headers);
+        return new ContentApiResponse(
+            TextHelper::get(
+                explode(',', $request->query->get('file', 'default')),
+                $this->lang
+            ), 200, $this->headers
+        );
     }
 
     /**
+     * @param Request $request Current request
      * @return Response
      *
      * @Route("/file", name="content_api_file")
      *
-     * @param Request $request Current request
      */
     public function fileAction(Request $request)
     {
@@ -185,11 +220,11 @@ class ContentApiController extends Controller
     }
 
     /**
+     * @param Request $request Current request
      * @return Response
      *
      * @Route("/module", name="content_api_module")
      *
-     * @param Request $request Current request
      */
     public function moduleAction(Request $request)
     {
@@ -199,11 +234,11 @@ class ContentApiController extends Controller
     }
 
     /**
+     * @param Request $request Current request
      * @return Response
      *
      * @Route("/urls", name="content_api_urls")
      *
-     * @param Request $request Current request
      */
     public function urlsAction(Request $request)
     {
@@ -214,12 +249,12 @@ class ContentApiController extends Controller
     }
 
     /**
+     * @param string $reader Reader (e.g. newsreader)
+     * @param Request $request Current request
      * @return Response
      *
      * @Route("/{reader}", name="content_api_reader")
      *
-     * @param string  $reader  Reader (e.g. newsreader)
-     * @param Request $request Current request
      */
     public function readerAction(string $reader, Request $request)
     {
@@ -242,11 +277,11 @@ class ContentApiController extends Controller
     }
 
     /**
+     * @param Request $request Current request
      * @return Response
      *
      * @Route("/", name="content_api_auto")
      *
-     * @param Request $request Current request
      */
     public function indexAction(Request $request)
     {

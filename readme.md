@@ -88,7 +88,7 @@ Gets the file or directory at `path` and also it's children, limited by `depth`
 
 [Example](examples/file.json)
 
-All routes also take the additional `lang` parameter (e.g. `?lang=de`). If you
+All routes also take the additional `lang` or `_locale` parameter (e.g. `?lang=de` or `?_locale=de`). If you
 need to override the language.
 
 ## Configuration

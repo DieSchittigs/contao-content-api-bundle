@@ -3,6 +3,7 @@
 namespace DieSchittigs\ContaoContentApiBundle;
 
 use Contao\Frontend;
+use Contao\FrontendUser;
 use Contao\MemberModel;
 
 /**
@@ -11,9 +12,15 @@ use Contao\MemberModel;
  */
 class ApiUser extends Frontend implements ContaoJsonSerializable
 {
+    /**
+     * @var FrontendUser
+     */
+    private $User;
+
     public function __construct()
     {
         $this->import('FrontendUser', 'User');
+
         parent::__construct();
         define('FE_USER_LOGGED_IN', $this->getLoginStatus('FE_USER_AUTH'));
     }

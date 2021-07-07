@@ -17,7 +17,7 @@ class Sitemap implements \IteratorAggregate, \ArrayAccess, \Countable, ContaoJso
      * constructor.
      *
      * @param string $language If set, ignores other languages
-     * @param int    $pid      Parent ID (for recursive calls)
+     * @param int $pid Parent ID (for recursive calls)
      */
     public function __construct(string $language = null, $pid = null)
     {
@@ -31,9 +31,17 @@ class Sitemap implements \IteratorAggregate, \ArrayAccess, \Countable, ContaoJso
         if (!$pages) {
             return;
         }
+
         foreach ($pages as $page) {
             $page->loadDetails();
-            $page->url = $page->getFrontendUrl();
+
+            // Catch error:
+            // Parameter "parameters" for route "cmf_routing_object" must match "/.+" ("" given) to generate a corresponding URL.
+            try {
+                $page->url = $page->getFrontendUrl();
+            } catch (\Exception $e) {
+                return;
+            }
             $page->urlAbsolute = $page->getAbsoluteUrl();
             $subSitemap = new Sitemap($language, $page->id);
             if ($language && $page->language != $language) {
