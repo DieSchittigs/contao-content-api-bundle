@@ -24,7 +24,7 @@ class Sitemap implements \IteratorAggregate, \ArrayAccess, \Countable, ContaoJso
         $this->sitemapFlat = new \stdClass();
         $pages = [];
         if (!$pid) {
-            $pages = PageModel::findPublishedRootPages(['order' => 'sorting ASC']);
+            $pages = PageModel::findPublishedRootPages(['order' => 'sorting ASC', 'dns' => $_SERVER['HTTP_HOST']]);
         } else {
             $pages = PageModel::findPublishedByPid($pid, ['order' => 'sorting ASC']);
         }

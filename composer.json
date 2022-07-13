@@ -1,5 +1,5 @@
 {
-  "name": "dieschittigs/contao-content-api-bundle",
+  "name": "lexprodsas/contao-content-api-bundle",
   "description": "Access Contao content via an easy to use JSON-API",
   "type": "contao-bundle",
   "keywords": [
@@ -20,6 +20,10 @@
     {
       "name": "Tobias Duehr",
       "email": "tobias@dieschittigs.de"
+    },
+    {
+      "name": "LEXPROD SAS",
+      "email": "alexandre.n@lexprod.net"
     }
   ],
   "autoload": {

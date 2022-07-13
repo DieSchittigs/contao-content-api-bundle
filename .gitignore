@@ -14,3 +14,4 @@ composer.lock
 !/web/api.php
 *.phar
 _docs/
+/.idea/*
