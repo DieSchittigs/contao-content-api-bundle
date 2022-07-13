@@ -20,9 +20,11 @@ Please note that the API is **not compatible with Contao 3.x**.
 Install [composer](https://getcomposer.org) if you haven't already,
 enter this command in the main directory of your Contao installation:
 
-    composer require dieschittigs/contao-content-api
+    composer require lexprodsas/contao-content-api-bundle
 
 Contao Content API is now installed and ready to use.
+
+Note : The original repos is dieschittigs/contao-content-api
 
 ## Usage
 
