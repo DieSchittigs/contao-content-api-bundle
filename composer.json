@@ -2,6 +2,7 @@
   "name": "lexprodsas/contao-content-api-bundle",
   "description": "Access Contao content via an easy to use JSON-API",
   "type": "contao-bundle",
+  "version": "dev-master",
   "keywords": [
     "contao",
     "api",
@@ -10,12 +11,13 @@
   ],
   "require": {
     "php": "^7.0",
-    "contao/core-bundle": "^4.4"
+    "contao/core-bundle": "^4.13"
   },
   "require-dev": {
+    "roave/security-advisories": "dev-latest",
     "evert/phpdoc-md": "~0.2.0"
   },
-  "license": "MIT",
+  "license": "LGPL-3.0-or-later",
   "authors": [
     {
       "name": "Tobias Duehr",
@@ -40,5 +42,11 @@
   },
   "extra": {
     "contao-manager-plugin": "DieSchittigs\\ContaoContentApiBundle\\ContaoManager\\Plugin"
+  },
+  "config": {
+    "allow-plugins": {
+      "contao-components/installer": false,
+      "ocramius/package-versions": true
+    }
   }
 }
